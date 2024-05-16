@@ -1,6 +1,6 @@
 # app/routes.py
 
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, current_app as app
 from . import db, bcrypt
 from .models import User
 
