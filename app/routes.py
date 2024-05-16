@@ -1,5 +1,3 @@
-# app/routes.py
-
 from flask import render_template, request, redirect, url_for, current_app as app
 from . import db, bcrypt
 from .models import User
@@ -31,3 +29,7 @@ def register():
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('register.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
