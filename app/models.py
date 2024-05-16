@@ -9,6 +9,6 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
 
 class QuizResult(db.Model):
-    id = db.Column(db.Integer, primary key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     score = db.Column(db.Integer)
