@@ -3,7 +3,34 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-    <h1 class="display-4">Welcome to Cybersecurity Awareness Training</h1>
+<div class="jumbotron text-center animate__animated animate__fadeIn">
+    <h1>Welcome to Cybersecurity Awareness Training</h1>
+    <p>Empowering individuals with the knowledge to protect against cyber threats.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="feature animate__animated animate__fadeInUp">
+            <h2>Why Cybersecurity Awareness Matters</h2>
+            <p>In today's digital age, cybersecurity awareness is crucial. Learn how to protect yourself and your organization from potential threats.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+            <h2>Our Features</h2>
+            <ul>
+                <li><i class="fas fa-user-shield"></i> Comprehensive cybersecurity content</li>
+                <li><i class="fas fa-clipboard-check"></i> Interactive quizzes and assessments</li>
+                <li><i class="fas fa-chart-line"></i> Progress tracking and analytics</li>
+                <li><i class="fas fa-lock"></i> Secure user data management</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+            <h2>Join Our Community</h2>
+            <p>Become part of a community dedicated to enhancing cybersecurity awareness. Register today and start your learning journey.</p>
+        </div>
+    </div>
 </div>
 {% endblock %}

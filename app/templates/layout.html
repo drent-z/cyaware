@@ -14,6 +14,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- Animate.css for simple animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -35,25 +37,6 @@
         }
         .container {
             margin-top: 20px;
-        }
-        .jumbotron {
-            background: linear-gradient(to right, #4e54c8, #8f94fb);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 40px;
-        }
-        .jumbotron h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-        .feature {
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
         }
         footer {
             background-color: #343a40;
@@ -101,28 +84,6 @@
         </nav>
     </header>
     <main class="container mt-4">
-        <div class="jumbotron">
-            <h1>Welcome to Cybersecurity Awareness Training</h1>
-            <p>Empowering individuals with the knowledge to protect against cyber threats.</p>
-            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
-        </div>
-        <div class="feature">
-            <h2>Why Cybersecurity Awareness Matters</h2>
-            <p>In today's digital age, cybersecurity awareness is crucial. Learn how to protect yourself and your organization from potential threats.</p>
-        </div>
-        <div class="feature">
-            <h2>Our Features</h2>
-            <ul>
-                <li><i class="fas fa-user-shield"></i> Comprehensive cybersecurity content</li>
-                <li><i class="fas fa-clipboard-check"></i> Interactive quizzes and assessments</li>
-                <li><i class="fas fa-chart-line"></i> Progress tracking and analytics</li>
-                <li><i class="fas fa-lock"></i> Secure user data management</li>
-            </ul>
-        </div>
-        <div class="feature">
-            <h2>Join Our Community</h2>
-            <p>Become part of a community dedicated to enhancing cybersecurity awareness. Register today and start your learning journey.</p>
-        </div>
         {% block content %}{% endblock %}
     </main>
     <footer>
