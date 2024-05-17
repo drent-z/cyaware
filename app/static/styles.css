@@ -1,44 +1,9 @@
 /* styles.css */
-:root {
-    --navbar-bg: #343a40;
-    --navbar-color: #fff;
-    --nav-link-color: #ddd;
-    --nav-link-hover-color: #fff;
-    --footer-bg: #343a40;
-    --footer-color: #ddd;
-    --footer-link-color: #fff;
-    --body-bg: #f8f9fa;
-    --body-color: #333;
-}
-
-[data-theme="light"] {
-    --navbar-bg: #f8f9fa;
-    --navbar-color: #343a40;
-    --nav-link-color: #343a40;
-    --nav-link-hover-color: #007bff;
-    --footer-bg: #f8f9fa;
-    --footer-color: #343a40;
-    --footer-link-color: #007bff;
-    --body-bg: #ffffff;
-    --body-color: #000000;
-}
-
-[data-theme="dark"] {
-    --navbar-bg: #343a40;
-    --navbar-color: #fff;
-    --nav-link-color: #ddd;
-    --nav-link-hover-color: #fff;
-    --footer-bg: #343a40;
-    --footer-color: #ddd;
-    --footer-link-color: #fff;
-    --body-bg: #121212;
-    --body-color: #ffffff;
-}
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--body-bg);
-    color: var(--body-color);
+    background-color: #f8f9fa;
+    color: #333;
 }
 
 header {
@@ -72,32 +37,32 @@ h1 {
 }
 
 .navbar {
-    background-color: var(--navbar-bg);
+    background-color: #343a40;
 }
 
 .navbar-brand {
-    color: var(--navbar-color) !important;
+    color: #fff !important;
     font-weight: 700;
 }
 
 .nav-link {
-    color: var(--nav-link-color) !important;
+    color: #ddd !important;
 }
 
 .nav-link:hover {
-    color: var(--nav-link-hover-color) !important;
+    color: #fff !important;
 }
 
 footer {
-    background-color: var(--footer-bg);
-    color: var(--footer-color);
+    background-color: #343a40;
+    color: #ddd;
     padding: 20px 0;
     text-align: center;
     margin-top: 40px;
 }
 
 footer a {
-    color: var(--footer-link-color);
+    color: #fff;
     margin: 0 10px;
     text-decoration: none;
 }
