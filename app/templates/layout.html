@@ -101,17 +101,19 @@
         </p>
     </footer>
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         const setTheme = theme => {
+            console.log(`Setting theme to ${theme}`);
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
         };
 
         const initTheme = () => {
             const savedTheme = localStorage.getItem('theme') || 'system';
+            console.log(`Saved theme is ${savedTheme}`);
             const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (savedTheme === 'system') {
                 setTheme(prefersDarkScheme ? 'dark' : 'light');
@@ -122,7 +124,9 @@
 
         document.getElementById('theme-toggle').addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
+            console.log(`Current theme is ${currentTheme}`);
             const newTheme = currentTheme === 'light' ? 'dark' : (currentTheme === 'dark' ? 'system' : 'light');
+            console.log(`New theme will be ${newTheme}`);
             setTheme(newTheme);
         });
 
