@@ -16,7 +16,7 @@
 
 ## Project Description
 
-CyAware is a web application designed to educate users on cybersecurity best practices through engaging content and quizzes. The platform allows users to register, access educational content, and test their knowledge with quizzes.
+CyAware is a web application designed to educate users on cybersecurity best practices through engaging content and quizzes. The platform allows users to register, access educational content, and test their knowledge with quizzes. It can be accessed at https://cyaware.net
 
 ## Features
 
