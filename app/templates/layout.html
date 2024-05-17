@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="system">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,45 +19,46 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
         }
         .navbar {
-            background-color: #343a40;
+            background-color: var(--navbar-bg);
         }
         .navbar-brand {
-            color: #fff !important;
+            color: var(--navbar-color) !important;
             font-weight: 700;
         }
         .nav-link {
-            color: #ddd !important;
+            color: var(--nav-link-color) !important;
         }
         .nav-link:hover {
-            color: #fff !important;
+            color: var(--nav-link-hover-color) !important;
         }
         .container {
             margin-top: 20px;
         }
         footer {
-            background-color: #343a40;
-            color: #ddd;
+            background-color: var(--footer-bg);
+            color: var(--footer-color);
             padding: 20px 0;
             text-align: center;
             margin-top: 40px;
         }
         footer a {
-            color: #fff;
+            color: var(--footer-link-color);
             margin: 0 10px;
             text-decoration: none;
         }
         footer a:hover {
             text-decoration: underline;
         }
+        .theme-toggle {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <nav class="navbar navbar-expand-lg">
             <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-shield-alt"></i> CyAware</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -78,6 +79,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link theme-toggle" id="theme-toggle"><i class="fas fa-adjust"></i></a>
                     </li>
                 </ul>
             </div>
@@ -100,5 +104,30 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Theme switcher logic
+        const setTheme = theme => {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        };
+
+        const initTheme = () => {
+            const savedTheme = localStorage.getItem('theme') || 'system';
+            if (savedTheme === 'system') {
+                const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setTheme(prefersDarkScheme ? 'dark' : 'light');
+            } else {
+                setTheme(savedTheme);
+            }
+        };
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : (currentTheme === 'dark' ? 'system' : 'light');
+            setTheme(newTheme);
+        });
+
+        initTheme();
+    </script>
 </body>
 </html>
