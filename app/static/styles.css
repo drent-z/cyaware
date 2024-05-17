@@ -7,6 +7,8 @@
     --footer-bg: #343a40;
     --footer-color: #ddd;
     --footer-link-color: #fff;
+    --body-bg: #f8f9fa;
+    --body-color: #333;
 }
 
 [data-theme="light"] {
@@ -17,6 +19,8 @@
     --footer-bg: #f8f9fa;
     --footer-color: #343a40;
     --footer-link-color: #007bff;
+    --body-bg: #ffffff;
+    --body-color: #000000;
 }
 
 [data-theme="dark"] {
@@ -27,12 +31,14 @@
     --footer-bg: #343a40;
     --footer-color: #ddd;
     --footer-link-color: #fff;
+    --body-bg: #121212;
+    --body-color: #ffffff;
 }
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--body-bg, #f8f9fa);
-    color: var(--body-color, #333);
+    background-color: var(--body-bg);
+    color: var(--body-color);
 }
 
 header {
