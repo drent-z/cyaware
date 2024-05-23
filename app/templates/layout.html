@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}?v={{ time() }}" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -17,7 +17,7 @@
     <!-- Animate.css for animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <!-- Custom Scripts -->
-    <script src="{{ url_for('static', filename='scripts.js') }}" async></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}?v={{ time() }}" async></script>
     <style>
         body {
             font-family: 'Roboto Mono', monospace;
@@ -133,6 +133,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('about') }}">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -147,7 +150,8 @@
             <a href="{{ url_for('content') }}">Content</a> |
             <a href="{{ url_for('quiz') }}">Quiz</a> |
             <a href="{{ url_for('register') }}">Register</a> |
-            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('about') }}">About</a> |
+            <a href="{{ url_for('login') }}">Login</a>
         </p>
     </footer>
     <!-- Bootstrap JS and dependencies -->

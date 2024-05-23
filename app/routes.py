@@ -34,3 +34,10 @@ def register():
 @app.route('/about')
 def about():
     return render_template('about.html', time=datetime.now().timestamp())
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Process login submission
+        pass
+    return render_template('login.html', time=datetime.now().timestamp())

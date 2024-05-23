@@ -95,3 +95,11 @@ footer {
     50% {transform: translateY(-10px);}
     100% {transform: translateY(0);}
 }
+
+.container {
+    padding: 20px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
