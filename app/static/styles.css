@@ -70,3 +70,16 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
+
+.container .feature {
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .jumbotron {
+        font-size: 1.5rem;
+    }
+    .feature {
+        margin-bottom: 20px;
+    }
+}
