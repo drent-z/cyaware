@@ -7,12 +7,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const text = typingEffect.textContent;
         typingEffect.textContent = '';
         let index = 0;
+        let isAdding = true;
 
         function typeEffect() {
-            if (index < text.length) {
-                typingEffect.textContent += text.charAt(index);
-                index++;
-                setTimeout(typeEffect, 100);
+            if (isAdding) {
+                if (index < text.length) {
+                    typingEffect.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(typeEffect, 100);
+                } else {
+                    isAdding = false;
+                    setTimeout(typeEffect, 1000); // Pause before deleting
+                }
+            } else {
+                if (index > 0) {
+                    typingEffect.textContent = text.substring(0, index - 1);
+                    index--;
+                    setTimeout(typeEffect, 100);
+                } else {
+                    isAdding = true;
+                    setTimeout(typeEffect, 1000); // Pause before typing again
+                }
             }
         }
 
