@@ -29,7 +29,7 @@ def create_app():
     login_manager.login_message_category = 'info'
 
     with app.app_context():
-        from . import routes  # Import routes
+        from . import routes  # Import routes after app is created
         db.create_all()  # Create database tables for our data models
 
     return app
