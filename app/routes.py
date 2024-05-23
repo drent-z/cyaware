@@ -1,23 +1,22 @@
-# app/routes.py
-
-from flask import render_template, request, redirect, url_for, jsonify, current_app as app
+from flask import render_template, request, redirect, url_for, current_app as app
 from . import db, bcrypt
-from .models import User, QuizResult, UserProgress
+from .models import User
+from datetime import datetime
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', time=datetime.now().timestamp())
 
 @app.route('/content')
 def content():
-    return render_template('content.html')
+    return render_template('content.html', time=datetime.now().timestamp())
 
 @app.route('/quiz', methods=['GET', 'POST'])
 def quiz():
     if request.method == 'POST':
         # Process quiz submission
         pass
-    return render_template('quiz.html')
+    return render_template('quiz.html', time=datetime.now().timestamp())
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -30,50 +29,8 @@ def register():
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('index'))
-    return render_template('register.html')
+    return render_template('register.html', time=datetime.now().timestamp())
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
-
-@app.route('/api/progress', methods=['POST'])
-def update_progress():
-    data = request.json
-    progress = UserProgress(
-        user_id=data['user_id'],
-        module_name=data['module_name'],
-        progress=data['progress']
-    )
-    db.session.add(progress)
-    db.session.commit()
-    return jsonify({"message": "Progress updated"}), 201
-
-@app.route('/api/progress/<int:user_id>', methods=['GET'])
-def get_progress(user_id):
-    progress = UserProgress.query.filter_by(user_id=user_id).all()
-    return jsonify([{
-        'module_name': p.module_name,
-        'progress': p.progress,
-        'timestamp': p.timestamp
-    } for p in progress])
-
-@app.route('/api/quiz/results', methods=['POST'])
-def submit_quiz_result():
-    data = request.json
-    quiz_result = QuizResult(
-        user_id=data['user_id'],
-        quiz_id=data['quiz_id'],
-        score=data['score']
-    )
-    db.session.add(quiz_result)
-    db.session.commit()
-    return jsonify({"message": "Quiz result submitted"}), 201
-
-@app.route('/api/quiz/results/<int:user_id>', methods=['GET'])
-def get_quiz_results(user_id):
-    results = QuizResult.query.filter_by(user_id=user_id).all()
-    return jsonify([{
-        'quiz_id': r.quiz_id,
-        'score': r.score,
-        'timestamp': r.timestamp
-    } for r in results])
+    return render_template('about.html', time=datetime.now().timestamp())
