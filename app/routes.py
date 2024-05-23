@@ -1,13 +1,13 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user, current_user, logout_user, login_required
-from . import app, db, bcrypt
+from . import db, bcrypt
 from .models import User
 
-@app.route('/')
+@current_app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@current_app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -22,7 +22,7 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html')
 
-@app.route('/register', methods=['GET', 'POST'])
+@current_app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -38,17 +38,17 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
-@app.route('/logout')
+@current_app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/content')
+@current_app.route('/content')
 @login_required
 def content():
     return render_template('content.html')
 
-@app.route('/quizzes')
+@current_app.route('/quizzes')
 @login_required
 def quizzes():
     return render_template('quizzes.html')
