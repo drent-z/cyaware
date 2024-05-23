@@ -1,49 +1,24 @@
-// scripts.js
-// Add any custom JavaScript for interactivity
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Auto fade out flash messages after 3 seconds
+    setTimeout(() => {
+        const flashMessages = document.querySelectorAll('.alert');
+        flashMessages.forEach((msg) => {
+           
+            msg.classList.add('animate__fadeOutUp');
+            setTimeout(() => {
+                msg.remove();
+            }, 1000); // Ensure the fade out animation completes before removing
+        });
+    }, 3000);
 
-document.addEventListener('DOMContentLoaded', function() {
-    const typingEffect = document.getElementById('typing-effect');
-    if (typingEffect) {
-        const text = typingEffect.textContent;
-        typingEffect.textContent = '';
-        let index = 0;
-        let isAdding = true;
-
-        function typeEffect() {
-            if (isAdding) {
-                if (index < text.length) {
-                    typingEffect.textContent += text.charAt(index);
-                    index++;
-                    setTimeout(typeEffect, 100);
-                } else {
-                    isAdding = false;
-                    setTimeout(typeEffect, 1000); // Pause before deleting
-                }
-            } else {
-                if (index > 0) {
-                    typingEffect.textContent = text.substring(0, index - 1);
-                    index--;
-                    setTimeout(typeEffect, 100);
-                } else {
-                    isAdding = true;
-                    setTimeout(typeEffect, 1000); // Pause before typing again
-                }
-            }
-        }
-
-        typeEffect();
-    }
-
-    const floatingWidget = document.querySelector('.floating-widget');
-    const closeBtn = document.createElement('span');
-    closeBtn.textContent = '✖';
-    closeBtn.style.position = 'absolute';
-    closeBtn.style.top = '10px';
-    closeBtn.style.right = '10px';
-    closeBtn.style.cursor = 'pointer';
-    closeBtn.style.color = '#ff0000';
-    floatingWidget.appendChild(closeBtn);
-    closeBtn.addEventListener('click', () => {
-        floatingWidget.style.display = 'none';
+    // Close button functionality
+    document.querySelectorAll('.alert .close').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const alert = event.target.closest('.alert');
+            alert.classList.add('animate__fadeOutUp');
+            setTimeout(() => {
+                alert.remove();
+            }, 1000); // Ensure the fade out animation completes before removing
+        });
     });
 });
