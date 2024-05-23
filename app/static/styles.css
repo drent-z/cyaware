@@ -30,6 +30,7 @@ header {
 .typing-container {
     display: inline-block;
     position: relative;
+    min-width: 20ch; /* Adjust based on your preference */
 }
 
 .hero h1 {
@@ -97,11 +98,11 @@ footer {
 .cursor {
     background-color: #00ff00;
     width: 10px;
-    height: 3rem; /* Match the height of the text */
+    height: 2.5rem; /* Adjust the height to match the text */
     display: inline-block;
     animation: blink 1s infinite;
     position: absolute;
-    right: -10px;
+    left: 0;
 }
 
 @keyframes blink {
