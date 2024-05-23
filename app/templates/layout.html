@@ -74,7 +74,7 @@
                         <a class="nav-link" href="{{ url_for('content') }}">Content</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('quiz') }}">Quiz</a>
+                        <a class="nav-link" href="{{ url_for('quizzes') }}">Quiz</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('about') }}">About</a>
@@ -103,7 +103,7 @@
         <p>
             <a href="{{ url_for('index') }}">Home</a> |
             <a href="{{ url_for('content') }}">Content</a> |
-            <a href="{{ url_for('quiz') }}">Quiz</a> |
+            <a href="{{ url_for('quizzes') }}">Quiz</a> |
             <a href="{{ url_for('register') }}">Register</a> |
             <a href="{{ url_for('about') }}">About</a> |
             {% if current_user.is_authenticated %}
