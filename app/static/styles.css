@@ -1,8 +1,8 @@
 /* General Styles */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto Mono', monospace;
     background-color: #0e0e0e;
-    color: #fff;
+    color: #00ff00;
     margin: 0;
     padding: 0;
 }
@@ -10,20 +10,22 @@ body {
 header {
     background-color: #1a1a1a;
     padding: 10px 0;
+    border-bottom: 2px solid #00ff00;
 }
 
 .navbar-brand {
-    color: #00e6e6 !important;
+    color: #00ff00 !important;
     font-size: 1.5rem;
 }
 
 .nav-link {
-    color: #00e6e6 !important;
+    color: #00ff00 !important;
     margin: 0 10px;
 }
 
 .nav-link:hover {
     color: #ffffff !important;
+    text-shadow: 0px 0px 5px #00ff00;
 }
 
 /* Main Banner */
@@ -31,7 +33,8 @@ header {
     background: url('path-to-your-image.jpg') no-repeat center center/cover;
     padding: 100px 20px;
     text-align: center;
-    color: #fff;
+    color: #00ff00;
+    border-bottom: 2px solid #00ff00;
 }
 
 .banner-content {
@@ -60,10 +63,10 @@ header {
 }
 
 .banner-content .btn {
-    background-color: #00e6e6;
+    background-color: #00ff00;
     border: none;
     padding: 10px 20px;
-    color: #fff;
+    color: #000;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
@@ -78,10 +81,11 @@ header {
     padding: 60px 20px;
     background-color: #0e0e0e;
     text-align: center;
+    border-bottom: 2px solid #00ff00;
 }
 
 .benefits h2 {
-    color: #00e6e6;
+    color: #00ff00;
     margin-bottom: 40px;
 }
 
@@ -90,15 +94,21 @@ header {
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
-    color: #fff;
+    color: #00ff00;
+    box-shadow: 0px 0px 10px #00ff00;
+    transition: transform 0.3s ease-in-out;
+}
+
+.benefits .feature:hover {
+    transform: scale(1.05);
 }
 
 .benefits .feature h3 {
-    color: #00e6e6;
+    color: #00ff00;
 }
 
 .benefits .feature p {
-    color: #fff;
+    color: #00ff00;
 }
 
 /* FAQ Section */
@@ -106,10 +116,11 @@ header {
     padding: 60px 20px;
     background-color: #0e0e0e;
     text-align: center;
+    border-bottom: 2px solid #00ff00;
 }
 
 .faq h2 {
-    color: #00e6e6;
+    color: #00ff00;
     margin-bottom: 40px;
 }
 
@@ -118,30 +129,55 @@ header {
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
-    color: #fff;
+    color: #00ff00;
+    box-shadow: 0px 0px 10px #00ff00;
+    transition: transform 0.3s ease-in-out;
+}
+
+.faq .feature:hover {
+    transform: scale(1.05);
 }
 
 .faq .feature h3 {
-    color: #00e6e6;
+    color: #00ff00;
 }
 
 .faq .feature p {
-    color: #fff;
+    color: #00ff00;
 }
 
 footer {
     background-color: #1a1a1a;
-    color: #00e6e6;
+    color: #00ff00;
     padding: 20px 0;
     text-align: center;
+    border-top: 2px solid #00ff00;
 }
 
 footer a {
-    color: #00e6e6;
+    color: #00ff00;
     margin: 0 10px;
     text-decoration: none;
 }
 
 footer a:hover {
     text-decoration: underline;
+}
+
+/* Additional Animations */
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.blinking-cursor {
+    font-weight: 100;
+    font-size: 30px;
+    color: #00ff00;
+    -webkit-animation: 1s blink step-end infinite;
+    -moz-animation: 1s blink step-end infinite;
+    -ms-animation: 1s blink step-end infinite;
+    -o-animation: 1s blink step-end infinite;
+    animation: 1s blink step-end infinite;
 }
