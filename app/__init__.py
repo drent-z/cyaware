@@ -11,7 +11,7 @@ login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('app.config.Config')
+    app.config.from_object('app.config.Config')  # Ensure this is the correct path to your config
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -29,7 +29,7 @@ def create_app():
     login_manager.login_message_category = 'info'
 
     with app.app_context():
-        from . import routes, models  # Import routes and models
+        from . import routes  # Import routes
         db.create_all()  # Create database tables for our data models
 
     return app

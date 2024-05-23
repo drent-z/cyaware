@@ -1,8 +1,7 @@
-from flask import render_template, flash, redirect, url_for, request
-from flask_login import login_required, current_user, login_user, logout_user, LoginManager
-from . import login_manager
+from flask import current_app as app, render_template, flash, redirect, url_for, request
+from flask_login import login_required, current_user, login_user, logout_user
 from .models import User
-from . import bcrypt, db
+from . import bcrypt, db, login_manager
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
