@@ -3,6 +3,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const typingEffect = document.getElementById('typing-effect');
+    const cursor = document.querySelector('.cursor');
     if (typingEffect) {
         const text = typingEffect.textContent;
         typingEffect.textContent = '';

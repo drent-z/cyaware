@@ -27,6 +27,14 @@ header {
     padding: 5rem 1rem;
 }
 
+.typing-container {
+    height: 3rem; /* Adjust based on your font size and line height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
 .hero h1 {
     font-size: 3rem;
     font-weight: 700;
@@ -86,4 +94,24 @@ footer {
     0% {transform: translateY(0);}
     50% {transform: translateY(-10px);}
     100% {transform: translateY(0);}
+}
+
+.cursor {
+    background-color: #00ff00;
+    width: 10px;
+    height: 3rem; /* Match the height of the text */
+    display: inline-block;
+    animation: blink 1s infinite;
+    margin-left: 5px;
+    position: absolute;
+    right: -10px;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
