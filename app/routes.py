@@ -46,11 +46,13 @@ def logout():
 @current_app.route('/content')
 @login_required
 def content():
+    flash('You need to login to access the content.', 'info')
     return render_template('content.html')
 
 @current_app.route('/quizzes')
 @login_required
 def quizzes():
+    flash('You need to login to access the quizzes.', 'info')
     return render_template('quizzes.html')
 
 @current_app.route('/about')
