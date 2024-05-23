@@ -10,71 +10,28 @@ header {
     margin-bottom: 20px;
 }
 
-h1 {
-    color: #007bff;
-}
-
 .jumbotron {
-    position: relative;
     background: linear-gradient(to right, #4e54c8, #8f94fb);
     color: white;
-    padding: 3rem 2rem;
+    padding: 2rem 1rem;
     text-align: center;
     border-radius: 10px;
     margin-bottom: 40px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.jumbotron::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* Overlay with transparency */
-    border-radius: 10px;
 }
 
 .jumbotron h1 {
-    position: relative;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    z-index: 1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
-    background-size: 400% 400%;
+    animation: gradient 3s infinite linear;
+    background: linear-gradient(90deg, #ff005e, #ffdd00, #00ff9e, #00ddff, #ff00ff, #ff005e);
+    background-size: 600%;
     -webkit-background-clip: text;
-    color: transparent;
-    animation: rainbow 5s linear infinite;
+    -webkit-text-fill-color: transparent;
 }
 
-@keyframes rainbow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.jumbotron p {
-    position: relative;
-    font-size: 1.5rem;
-    margin-top: 20px;
-    z-index: 1;
-}
-
-.jumbotron .btn {
-    position: relative;
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    z-index: 1;
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
 .feature {
@@ -83,16 +40,6 @@ h1 {
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    text-align: center;
-}
-
-.feature h2 {
-    font-size: 1.75rem;
-    margin-bottom: 15px;
-}
-
-.feature p {
-    font-size: 1rem;
 }
 
 .navbar {
@@ -128,16 +75,4 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
-}
-
-@media (max-width: 767px) {
-    .jumbotron {
-        padding: 2rem 1rem;
-    }
-    .jumbotron h1 {
-        font-size: 2.5rem;
-    }
-    .feature {
-        margin-bottom: 20px;
-    }
 }
