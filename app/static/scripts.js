@@ -3,11 +3,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     setTimeout(() => {
         const flashMessages = document.querySelectorAll('.alert');
         flashMessages.forEach((msg) => {
-           
             msg.classList.add('animate__fadeOutUp');
             setTimeout(() => {
                 msg.remove();
-            }, 1000); // Ensure the fade out animation completes before removing
+            }, 1000); // Ensure the fade-out animation completes before removing
         });
     }, 3000);
 
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             alert.classList.add('animate__fadeOutUp');
             setTimeout(() => {
                 alert.remove();
-            }, 1000); // Ensure the fade out animation completes before removing
+            }, 1000); // Ensure the fade-out animation completes before removing
         });
     });
 });
