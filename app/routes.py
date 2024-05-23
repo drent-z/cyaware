@@ -3,6 +3,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
 from app.models import User
 from app.forms import RegisterForm, LoginForm
+from app import create_app
+
+app = create_app()
 
 @app.route('/')
 def index():
