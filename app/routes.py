@@ -52,3 +52,7 @@ def content():
 @login_required
 def quizzes():
     return render_template('quizzes.html')
+
+@current_app.route('/about')
+def about():
+    return render_template('about.html')
