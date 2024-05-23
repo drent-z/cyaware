@@ -2,4 +2,5 @@ Flask
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Bcrypt
+Flask-Login
 gunicorn
