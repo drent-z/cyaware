@@ -1,5 +1,8 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user, login_user, logout_user, LoginManager
+from . import login_manager
+from .models import User
+from . import bcrypt, db
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
@@ -28,9 +31,15 @@ def quiz(id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Add your login logic here
-        flash('Login successful!', 'success')
-        return redirect(url_for('index'))
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+        if user and bcrypt.check_password_hash(user.password_hash, password):
+            login_user(user, remember=request.form.get('remember_me'))
+            flash('Login successful!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Login unsuccessful. Please check email and password.', 'danger')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -43,7 +52,13 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # Add your registration logic here
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        user = User(username=username, email=email, password_hash=password_hash)
+        db.session.add(user)
+        db.session.commit()
         flash('Registration successful!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')

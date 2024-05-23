@@ -25,11 +25,11 @@ def create_app():
         return User.query.get(int(user_id))
 
     login_manager.login_view = 'login'
+    login_manager.login_message = 'You need to login to access this page.'
     login_manager.login_message_category = 'info'
 
     with app.app_context():
         from . import routes, models  # Import routes and models
-
         db.create_all()  # Create database tables for our data models
 
-        return app
+    return app
