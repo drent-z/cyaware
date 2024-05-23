@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, current_app as app
 from flask_login import login_user, logout_user, login_required, current_user
 from . import db, bcrypt
 from .models import User, QuizResult
