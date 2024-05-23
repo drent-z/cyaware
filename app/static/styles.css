@@ -1,206 +1,102 @@
-/* General Styles */
+/* styles.css */
+:root {
+    --navbar-bg: #1a1a1a;
+    --navbar-color: #00ff00;
+    --nav-link-color: #00ff00;
+    --nav-link-hover-color: #ff00ff;
+    --footer-bg: #1a1a1a;
+    --footer-color: #ddd;
+    --footer-link-color: #00ff00;
+    --body-bg: #000;
+    --body-color: #fff;
+}
+
 body {
     font-family: 'Roboto Mono', monospace;
-    background-color: #0e0e0e;
-    color: #00ff00;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+    background-color: var(--body-bg);
+    color: var(--body-color);
 }
 
 header {
-    background-color: #1a1a1a;
-    padding: 10px 0;
-    border-bottom: 2px solid #00ff00;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
+    margin-bottom: 20px;
 }
 
-.navbar-brand {
-    color: #00ff00 !important;
-    font-size: 1.5rem;
-}
-
-.nav-link {
-    color: #00ff00 !important;
-    margin: 0 10px;
-}
-
-.nav-link:hover {
-    color: #ffffff !important;
-    text-shadow: 0px 0px 5px #00ff00;
-}
-
-/* Main Banner */
-.main-banner {
-    background: url('path-to-your-image.jpg') no-repeat center center/cover;
-    padding: 100px 20px;
+.hero {
     text-align: center;
-    color: #00ff00;
-    border-bottom: 2px solid #00ff00;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background: linear-gradient(to right, #4e54c8, #8f94fb);
+    color: white;
+    padding: 5rem 1rem;
 }
 
-.banner-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.banner-content h1 {
+.hero h1 {
     font-size: 3rem;
-    margin-bottom: 20px;
-    animation: gradient 3s infinite linear;
-    background: linear-gradient(90deg, #ff005e, #ffdd00, #00ff9e, #00ddff, #ff00ff, #ff005e);
-    background-size: 600%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradient 3s infinite linear, blink 1s step-end infinite;
+    font-weight: 700;
+    animation: rainbow 5s linear infinite;
 }
 
-@keyframes gradient {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
+@keyframes rainbow {
+    0% {color: #ff0000;}
+    20% {color: #ffa500;}
+    40% {color: #ffff00;}
+    60% {color: #008000;}
+    80% {color: #0000ff;}
+    100% {color: #4b0082;}
 }
 
-@keyframes blink {
-    50% { opacity: 0; }
+.hero p {
+    font-size: 1.5rem;
+    animation: fadeIn 3s;
 }
 
-.banner-content p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
 
-.banner-content .btn {
-    background-color: #00ff00;
-    border: none;
-    padding: 10px 20px;
-    color: #000;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0px 0px 10px #00ff00;
-    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 2rem;
+    background-color: #121212;
 }
 
-.banner-content .btn:hover {
-    background-color: #00bfbf;
-    box-shadow: 0px 0px 20px #00bfbf;
-}
-
-/* Benefits Section */
-.benefits {
-    padding: 60px 20px;
-    background-color: #0e0e0e;
-    text-align: center;
-    border-bottom: 2px solid #00ff00;
-}
-
-.benefits h2 {
-    color: #00ff00;
-    margin-bottom: 40px;
-    text-shadow: 0px 0px 10px #00ff00;
-}
-
-.benefits .feature {
+.feature-box {
+    width: 30%;
     background-color: #1a1a1a;
-    padding: 20px;
+    padding: 2rem;
     border-radius: 10px;
-    margin-bottom: 20px;
-    color: #00ff00;
-    box-shadow: 0px 0px 10px #00ff00;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    animation: pulse 2s infinite;
 }
 
-.benefits .feature:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 0px 20px #00ff00;
-}
-
-.benefits .feature h3 {
-    color: #00ff00;
-    text-shadow: 0px 0px 10px #00ff00;
-}
-
-.benefits .feature p {
-    color: #00ff00;
-}
-
-/* FAQ Section */
-.faq {
-    padding: 60px 20px;
-    background-color: #0e0e0e;
-    text-align: center;
-    border-bottom: 2px solid #00ff00;
-}
-
-.faq h2 {
-    color: #00ff00;
-    margin-bottom: 40px;
-    text-shadow: 0px 0px 10px #00ff00;
-}
-
-.faq .feature {
-    background-color: #1a1a1a;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    color: #00ff00;
-    box-shadow: 0px 0px 10px #00ff00;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.faq .feature:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 0px 20px #00ff00;
-}
-
-.faq .feature h3 {
-    color: #00ff00;
-    text-shadow: 0px 0px 10px #00ff00;
-}
-
-.faq .feature p {
-    color: #00ff00;
+@keyframes pulse {
+    0% {box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);}
+    50% {box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);}
+    100% {box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);}
 }
 
 footer {
-    background-color: #1a1a1a;
-    color: #00ff00;
-    padding: 20px 0;
+    background-color: var(--footer-bg);
+    color: var(--footer-color);
+    padding: 2rem 0;
     text-align: center;
-    border-top: 2px solid #00ff00;
 }
 
-footer a {
+.floating-widget {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
     color: #00ff00;
-    margin: 0 10px;
-    text-decoration: none;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #00ff00;
+    animation: float 3s ease-in-out infinite;
 }
 
-footer a:hover {
-    text-decoration: underline;
-}
-
-/* Additional Animations */
-@keyframes blink {
-    50% {
-        opacity: 0;
-    }
-}
-
-.blinking-cursor {
-    font-weight: 100;
-    font-size: 30px;
-    color: #00ff00;
-    -webkit-animation: 1s blink step-end infinite;
-    -moz-animation: 1s blink step-end infinite;
-    -ms-animation: 1s blink step-end infinite;
-    -o-animation: 1s blink step-end infinite;
-    animation: 1s blink step-end infinite;
+@keyframes float {
+    0% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+    100% {transform: translateY(0);}
 }

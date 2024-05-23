@@ -3,31 +3,29 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="main-banner">
-    <div class="banner-content">
-        <h1>Cybersecurity Awareness Training<span class="blinking-cursor">|</span></h1>
-        <p>Empowering individuals with the knowledge to protect against cyber threats.</p>
-        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Start the Free Training</a>
-    </div>
+<div class="hero">
+    <h1>Welcome to CyAware<span class="blinking-cursor">|</span></h1>
+    <p>Empowering individuals with the knowledge to protect against cyber threats.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Start the Free Training</a>
 </div>
-<section class="benefits">
+<section class="features">
     <div class="container">
         <h2>Benefits & Features</h2>
         <div class="row">
             <div class="col-md-4">
-                <div class="feature">
+                <div class="feature-box">
                     <h3>Enable an Inclusive Learning Culture</h3>
                     <p>Close a critical knowledge gap with our comprehensive training in English.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature">
+                <div class="feature-box">
                     <h3>Align to Compliance Frameworks</h3>
                     <p>Our training aligns with top cybersecurity frameworks including NIST, ISO 27001, and more.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature">
+                <div class="feature-box">
                     <h3>Speedy Training</h3>
                     <p>Our streamlined training can be completed in minutes, ensuring minimal disruption to your workflow.</p>
                 </div>
@@ -38,15 +36,15 @@
 <section class="faq">
     <div class="container">
         <h2>FAQ</h2>
-        <div class="feature">
+        <div class="feature-box">
             <h3>What topics does this training cover?</h3>
             <p>This training covers the basics of cybersecurity awareness, including phishing, password security, and more.</p>
         </div>
-        <div class="feature">
+        <div class="feature-box">
             <h3>Who should take this training?</h3>
             <p>This training is for anyone looking to improve their understanding of cybersecurity and how to protect themselves and their organization.</p>
         </div>
-        <div class="feature">
+        <div class="feature-box">
             <h3>Are there any pre-requisites?</h3>
             <p>No prior knowledge is required. The training is designed for all skill levels.</p>
         </div>
