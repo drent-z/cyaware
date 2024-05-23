@@ -28,14 +28,12 @@ header {
 }
 
 .typing-container {
-    height: 3rem; /* Adjust based on your font size and line height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
     position: relative;
 }
 
 .hero h1 {
+    display: inline;
     font-size: 3rem;
     font-weight: 700;
     color: #00ff00;
@@ -102,7 +100,6 @@ footer {
     height: 3rem; /* Match the height of the text */
     display: inline-block;
     animation: blink 1s infinite;
-    margin-left: 5px;
     position: absolute;
     right: -10px;
 }

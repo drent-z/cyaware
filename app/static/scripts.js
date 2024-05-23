@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(typeEffect, 1000); // Pause before typing again
                 }
             }
+            cursor.style.left = `${typingEffect.clientWidth}px`;
         }
 
         typeEffect();
