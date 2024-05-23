@@ -31,6 +31,7 @@ header {
     display: inline-block;
     position: relative;
     min-width: 20ch; /* Adjust based on your preference */
+    height: 3rem; /* Ensure fixed height */
 }
 
 .hero h1 {
@@ -93,24 +94,4 @@ footer {
     0% {transform: translateY(0);}
     50% {transform: translateY(-10px);}
     100% {transform: translateY(0);}
-}
-
-.cursor {
-    background-color: #00ff00;
-    width: 10px;
-    height: 2.5rem; /* Adjust the height to match the text */
-    display: inline-block;
-    animation: blink 1s infinite;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-
-@keyframes blink {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
 }

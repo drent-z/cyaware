@@ -3,7 +3,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const typingEffect = document.getElementById('typing-effect');
-    const cursor = document.querySelector('.cursor');
     if (typingEffect) {
         const text = typingEffect.textContent;
         typingEffect.textContent = '';
@@ -30,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(typeEffect, 1000); // Pause before typing again
                 }
             }
-            cursor.style.left = `${typingEffect.clientWidth}px`;
         }
 
         typeEffect();
