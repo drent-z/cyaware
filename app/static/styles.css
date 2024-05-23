@@ -5,12 +5,16 @@ body {
     color: #00ff00;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 header {
     background-color: #1a1a1a;
     padding: 10px 0;
     border-bottom: 2px solid #00ff00;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar-brand {
@@ -35,6 +39,11 @@ header {
     text-align: center;
     color: #00ff00;
     border-bottom: 2px solid #00ff00;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .banner-content {
@@ -50,11 +59,16 @@ header {
     background-size: 600%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: gradient 3s infinite linear, blink 1s step-end infinite;
 }
 
 @keyframes gradient {
     0% { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
 }
 
 .banner-content p {
@@ -70,10 +84,13 @@ header {
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
+    box-shadow: 0px 0px 10px #00ff00;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .banner-content .btn:hover {
     background-color: #00bfbf;
+    box-shadow: 0px 0px 20px #00bfbf;
 }
 
 /* Benefits Section */
@@ -87,6 +104,7 @@ header {
 .benefits h2 {
     color: #00ff00;
     margin-bottom: 40px;
+    text-shadow: 0px 0px 10px #00ff00;
 }
 
 .benefits .feature {
@@ -96,15 +114,17 @@ header {
     margin-bottom: 20px;
     color: #00ff00;
     box-shadow: 0px 0px 10px #00ff00;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .benefits .feature:hover {
     transform: scale(1.05);
+    box-shadow: 0px 0px 20px #00ff00;
 }
 
 .benefits .feature h3 {
     color: #00ff00;
+    text-shadow: 0px 0px 10px #00ff00;
 }
 
 .benefits .feature p {
@@ -122,6 +142,7 @@ header {
 .faq h2 {
     color: #00ff00;
     margin-bottom: 40px;
+    text-shadow: 0px 0px 10px #00ff00;
 }
 
 .faq .feature {
@@ -131,15 +152,17 @@ header {
     margin-bottom: 20px;
     color: #00ff00;
     box-shadow: 0px 0px 10px #00ff00;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .faq .feature:hover {
     transform: scale(1.05);
+    box-shadow: 0px 0px 20px #00ff00;
 }
 
 .faq .feature h3 {
     color: #00ff00;
+    text-shadow: 0px 0px 10px #00ff00;
 }
 
 .faq .feature p {
