@@ -1,10 +1,9 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required
-from app import db, bcrypt, create_app
+from app import db, bcrypt
 from app.models import User
 from app.forms import RegisterForm, LoginForm
-
-app = create_app()
+from flask import current_app as app
 
 @app.route('/')
 def index():
