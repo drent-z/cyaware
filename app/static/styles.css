@@ -17,15 +17,28 @@ h1 {
 .jumbotron {
     background: linear-gradient(to right, #4e54c8, #8f94fb);
     color: white;
-    padding: 2rem 1rem;
+    padding: 3rem 2rem;
     text-align: center;
     border-radius: 10px;
     margin-bottom: 40px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 .jumbotron h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.jumbotron p {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+.jumbotron .btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
 }
 
 .feature {
@@ -34,6 +47,16 @@ h1 {
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    text-align: center;
+}
+
+.feature h2 {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+}
+
+.feature p {
+    font-size: 1rem;
 }
 
 .navbar {
@@ -71,13 +94,12 @@ footer a:hover {
     text-decoration: underline;
 }
 
-.container .feature {
-    text-align: center;
-}
-
 @media (max-width: 767px) {
     .jumbotron {
-        font-size: 1.5rem;
+        padding: 2rem 1rem;
+    }
+    .jumbotron h1 {
+        font-size: 2.5rem;
     }
     .feature {
         margin-bottom: 20px;
