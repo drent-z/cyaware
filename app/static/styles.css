@@ -81,3 +81,22 @@ footer {
     padding: 2rem 0;
     text-align: center;
 }
+
+.floating-widget {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #00ff00;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #00ff00;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+    100% {transform: translateY(0);}
+}
