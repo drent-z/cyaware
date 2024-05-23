@@ -23,7 +23,7 @@ def quiz():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST']:
+    if request.method == 'POST':  # Corrected line
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
@@ -37,7 +37,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST']:
+    if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
         user = User.query.filter_by(email=email).first()
