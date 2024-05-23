@@ -56,57 +56,6 @@
         footer a:hover {
             text-decoration: underline;
         }
-        .glitch {
-            color: #00ff00;
-            font-size: 2rem;
-            font-weight: 700;
-            position: relative;
-        }
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            overflow: hidden;
-        }
-        .glitch::before {
-            left: 2px;
-            text-shadow: -2px 0 #ff00ff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch 2s infinite linear alternate-reverse;
-        }
-        .glitch::after {
-            left: -2px;
-            text-shadow: -2px 0 #00ffff, 2px 2px #ff00ff;
-            clip: rect(85px, 450px, 140px, 0);
-            animation: glitch 1s infinite linear alternate-reverse;
-        }
-        @keyframes glitch {
-            0% { clip: rect(42px, 9999px, 44px, 0); }
-            5% { clip: rect(12px, 9999px, 34px, 0); }
-            10% { clip: rect(100px, 9999px, 107px, 0); }
-            15% { clip: rect(56px, 9999px, 84px, 0); }
-            20% { clip: rect(92px, 9999px, 119px, 0); }
-            25% { clip: rect(76px, 9999px, 82px, 0); }
-            30% { clip: rect(9px, 9999px, 53px, 0); }
-            35% { clip: rect(98px, 9999px, 111px, 0); }
-            40% { clip: rect(48px, 9999px, 74px, 0); }
-            45% { clip: rect(36px, 9999px, 44px, 0); }
-            50% { clip: rect(68px, 9999px, 107px, 0); }
-            55% { clip: rect(37px, 9999px, 51px, 0); }
-            60% { clip: rect(101px, 9999px, 119px, 0); }
-            65% { clip: rect(84px, 9999px, 86px, 0); }
-            70% { clip: rect(22px, 9999px, 52px, 0); }
-            75% { clip: rect(63px, 9999px, 79px, 0); }
-            80% { clip: rect(15px, 9999px, 47px, 0); }
-            85% { clip: rect(75px, 9999px, 80px, 0); }
-            90% { clip: rect(36px, 9999px, 65px, 0); }
-            95% { clip: rect(54px, 9999px, 75px, 0); }
-            100% { clip: rect(20px, 9999px, 38px, 0); }
-        }
     </style>
 </head>
 <body>
@@ -128,14 +77,20 @@
                         <a class="nav-link" href="{{ url_for('quiz') }}">Quiz</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('login') }}">Login</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
@@ -151,7 +106,11 @@
             <a href="{{ url_for('quiz') }}">Quiz</a> |
             <a href="{{ url_for('register') }}">Register</a> |
             <a href="{{ url_for('about') }}">About</a> |
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
             <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
         </p>
     </footer>
     <!-- Bootstrap JS and dependencies -->
