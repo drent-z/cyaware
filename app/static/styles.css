@@ -283,7 +283,7 @@ footer {
 }
 
 /* Mobile Styles */
-@media (max-width: 768px) {
+@media (max-width: 992px) { /* Adjust breakpoint to ensure no intermediate view */
     .navbar-toggler {
         display: block;
     }
