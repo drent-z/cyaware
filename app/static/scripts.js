@@ -20,4 +20,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }, 1000); // Ensure the fade-out animation completes before removing
         });
     });
+
+    // Navbar toggle functionality
+    document.getElementById('navbar-toggle').addEventListener('click', function() {
+        var navLinks = document.getElementById('nav-links');
+        navLinks.classList.toggle('show');
+    });
 });
