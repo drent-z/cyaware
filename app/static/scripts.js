@@ -21,9 +21,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
 
-    // Navbar toggle functionality
-    document.querySelector('.navbar-toggler').addEventListener('click', function() {
-        var navLinks = document.querySelector('.navbar-collapse');
-        navLinks.classList.toggle('show');
+    // Navbar toggle functionality using jQuery
+    $('.navbar-toggler').click(function() {
+        $('.navbar-collapse').toggleClass('show');
     });
 });
