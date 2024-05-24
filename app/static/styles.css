@@ -14,6 +14,9 @@ body {
     font-family: 'Roboto Mono', monospace;
     background-color: var(--body-bg);
     color: var(--body-color);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 header {
@@ -23,23 +26,30 @@ header {
 .navbar {
     background-color: var(--navbar-bg);
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .navbar-brand {
     color: var(--navbar-color);
     font-weight: 700;
     text-decoration: none;
+    font-size: 1.5rem;
 }
 
 .nav-links {
     list-style-type: none;
     display: flex;
     gap: 1rem;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
     color: var(--nav-link-color);
     text-decoration: none;
+    font-size: 1.2rem;
 }
 
 .nav-links a:hover {
@@ -110,36 +120,12 @@ footer {
     text-align: center;
 }
 
-.floating-widget {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 300px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #00ff00;
-    border-radius: 10px;
-    box-shadow: 0 0 20px #00ff00;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0% {transform: translateY(0);}
-    50% {transform: translateY(-10px);}
-    100% {transform: translateY(0);}
-}
-
 .container {
     padding: 20px;
     background-color: #000;
     color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
-
-.fade-out {
-    opacity: 0;
-    transition: opacity 0.5s linear;
 }
 
 .glitch {
