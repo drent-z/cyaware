@@ -8,9 +8,6 @@
     --footer-link-color: #00ff00;
     --body-bg: #000;
     --body-color: #fff;
-    --cta-bg: #00ff00;
-    --cta-hover-bg: #ff00ff;
-    --cta-color: #000;
 }
 
 body {
@@ -19,50 +16,43 @@ body {
     color: var(--body-color);
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    overflow-x: hidden;
 }
 
 header {
     margin-bottom: 20px;
+    background-color: var(--navbar-bg);
+    padding: 1rem;
 }
 
 .navbar {
-    background-color: var(--navbar-bg);
-    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .navbar-brand {
-    color: var(--navbar-color);
-    font-weight: 700;
-    text-decoration: none;
     font-size: 1.5rem;
+    color: var(--navbar-color);
+    text-decoration: none;
 }
 
 .navbar-toggle {
     display: none;
     font-size: 1.5rem;
+    color: var(--navbar-color);
     background: none;
     border: none;
-    color: var(--navbar-color);
-    cursor: pointer;
 }
 
 .nav-links {
-    list-style-type: none;
+    list-style: none;
     display: flex;
     gap: 1rem;
-    margin: 0;
-    padding: 0;
 }
 
 .nav-links a {
     color: var(--nav-link-color);
     text-decoration: none;
-    font-size: 1.2rem;
 }
 
 .nav-links a:hover {
@@ -78,8 +68,8 @@ header {
 .typing-container {
     display: inline-block;
     position: relative;
-    min-width: 20ch;
-    height: 3rem;
+    min-width: 20ch; /* Adjust based on your preference */
+    height: 3rem; /* Ensure fixed height */
 }
 
 .hero h1 {
@@ -91,33 +81,16 @@ header {
 }
 
 @keyframes rainbow {
-    0% { color: #ff0000; }
-    20% { color: #ffa500; }
-    40% { color: #ffff00; }
-    60% { color: #008000; }
-    80% { color: #0000ff; }
-    100% { color: #4b0082; }
+    0% {color: #ff0000;}
+    20% {color: #ffa500;}
+    40% {color: #ffff00;}
+    60% {color: #008000;}
+    80% {color: #0000ff;}
+    100% {color: #4b0082;}
 }
 
 .hero p {
     font-size: 1.5rem;
-}
-
-.cta-button {
-    display: inline-block;
-    background-color: var(--cta-bg);
-    color: var(--cta-color);
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 5px;
-    text-decoration: none;
-    margin-top: 1rem;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.cta-button:hover {
-    background-color: var(--cta-hover-bg);
 }
 
 .features {
@@ -136,11 +109,6 @@ header {
     margin: 1rem;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease-in-out;
-}
-
-.feature-box:hover {
-    transform: scale(1.1);
 }
 
 footer {
@@ -150,12 +118,36 @@ footer {
     text-align: center;
 }
 
+.floating-widget {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #00ff00;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #00ff00;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+    100% {transform: translateY(0);}
+}
+
 .container {
     padding: 20px;
     background-color: #000;
     color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s linear;
 }
 
 .glitch {
@@ -224,7 +216,7 @@ footer {
         clip: rect(25px, 9999px, 56px, 0);
         transform: skew(0.3deg);
     }
-     40% {
+    40% {
         clip: rect(44px, 9999px, 36px, 0);
         transform: skew(0.3deg);
     }
@@ -287,17 +279,12 @@ footer {
     .nav-links {
         display: none;
         flex-direction: column;
-        gap: 0;
+        width: 100%;
+        text-align: center;
     }
 
     .nav-links.active {
         display: flex;
-    }
-
-    .nav-links a {
-        padding: 1rem;
-        border-top: 1px solid var(--navbar-color);
-        border-bottom: 1px solid var(--navbar-color);
     }
 
     .hero {
@@ -314,12 +301,15 @@ footer {
 
     .features {
         flex-direction: column;
-        align-items: center;
     }
 
     .feature-box {
-        max-width: 90%;
-        margin: 1rem 0;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .navbar {
+        padding: 0.5rem 1rem;
     }
 
     .container {
@@ -329,53 +319,4 @@ footer {
     footer {
         padding: 1rem 0;
     }
-}
-
-.contact-form {
-    background-color: #1a1a1a;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
-
-.contact-form .form-control {
-    background-color: #121212;
-    color: #fff;
-    border: 1px solid #333;
-}
-
-.contact-form .btn-primary {
-    background-color: #00ff00;
-    border-color: #00ff00;
-    color: #000;
-}
-
-.contact-form .btn-primary:hover {
-    background-color: #ff00ff;
-    border-color: #ff00ff;
-    color: #fff;
-}
-
-.navbar-toggler {
-    border: none;
-    background: none;
-    font-size: 1.5rem;
-    color: #00ff00;
-}
-
-.navbar-toggler:focus {
-    outline: none;
-}
-
-.navbar-collapse {
-    background-color: #1a1a1a;
-}
-
-@keyframes hackerAnimation {
-    0% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1.2); }
-    100% { opacity: 1; transform: scale(1); }
-}
-.nav-links.active {
-    animation: hackerAnimation 0.5s forwards;
 }
