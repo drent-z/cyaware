@@ -138,7 +138,8 @@ header {
 }
 
 .feature-box:hover {
-    transform: scale(1.1);
+    transform:
+    scale(1.1);
 }
 
 footer {
@@ -312,7 +313,7 @@ footer {
     }
 
     .feature-box {
-        max-width: 90%;
+        width: 100%;
         margin: 1rem 0;
     }
 
