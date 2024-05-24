@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyAware</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
@@ -53,11 +53,7 @@
     <script>
         document.getElementById('navbar-toggle').addEventListener('click', function() {
             var navLinks = document.getElementById('nav-links');
-            if (navLinks.style.display === 'block') {
-                navLinks.style.display = 'none';
-            } else {
-                navLinks.style.display = 'block';
-            }
+            navLinks.classList.toggle('show');
         });
     </script>
 </body>

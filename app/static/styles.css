@@ -138,8 +138,7 @@ header {
 }
 
 .feature-box:hover {
-    transform:
-    scale(1.1);
+    transform: scale(1.1);
 }
 
 footer {
@@ -287,6 +286,10 @@ footer {
         display: none;
         flex-direction: column;
         gap: 0;
+    }
+
+    .nav-links.show {
+        display: flex;
     }
 
     .nav-links a {
