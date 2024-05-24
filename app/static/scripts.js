@@ -20,21 +20,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }, 1000); // Ensure the fade-out animation completes before removing
         });
     });
-
-    // Toggle Navbar
-    const navbarToggle = document.getElementById('navbar-toggle');
-    const navLinks = document.getElementById('nav-links');
-
-    navbarToggle.addEventListener('click', function() {
-        if (navLinks.style.display === 'block') {
-            navLinks.style.display = 'none';
-        } else {
-            navLinks.style.display = 'block';
-            // Hacker-esque animation
-            navLinks.classList.add('animate__animated', 'animate__fadeInDown');
-            setTimeout(() => {
-                navLinks.classList.remove('animate__animated', 'animate__fadeInDown');
-            }, 1000);
-        }
-    });
 });
