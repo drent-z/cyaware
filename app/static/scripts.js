@@ -30,35 +30,51 @@ document.addEventListener('DOMContentLoaded', (event) => {
         $('.navbar-collapse').toggleClass('show');
     });
 
-    // Apply Framer Motion animations
-    const heroSection = document.getElementById('hero-section');
-    const featuresSection = document.getElementById('features-section');
+    // Framer Motion scroll animation
     const featureBoxes = document.querySelectorAll('.feature-box');
+    const controls = useAnimation();
 
-    // Animate Hero Section
-    if (heroSection) {
-        motion(heroSection, {
-            initial: { opacity: 0, y: -50 },
-            animate: { opacity: 1, y: 0 },
-            transition: { duration: 1, ease: 'easeOut' }
-        });
-    }
+    // Function to check if element is in viewport
+    const isInViewport = (element) => {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
 
-    // Animate Features Section
-    if (featuresSection) {
-        motion(featuresSection, {
-            initial: { opacity: 0 },
-            animate: { opacity: 1 },
-            transition: { duration: 1.5, ease: 'easeOut' }
-        });
-    }
-
-    // Animate Feature Boxes
+    // Apply Framer Motion animations
     featureBoxes.forEach((featureBox, index) => {
         motion(featureBox, {
             initial: { opacity: 0, y: 50 },
             animate: { opacity: 1, y: 0 },
             transition: { duration: 0.5, delay: index * 0.2, ease: 'easeOut' }
         });
+    });
+
+    // Scroll event listener to animate feature boxes when they come into view
+    window.addEventListener('scroll', () => {
+        featureBoxes.forEach((featureBox, index) => {
+            if (isInViewport(featureBox)) {
+                controls.start({
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, delay: index * 0.2, ease: 'easeOut' }
+                });
+            }
+        });
+    });
+
+    // Initial check for elements in the viewport
+    featureBoxes.forEach((featureBox) => {
+        if (isInViewport(featureBox)) {
+            controls.start({
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.5, ease: 'easeOut' }
+            });
+        }
     });
 });
