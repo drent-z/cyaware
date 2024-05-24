@@ -18,15 +18,19 @@ def create_app():
     migrate.init_app(app, db)
     bcrypt.init_app(app)
 
-    from .models import User, QuizResult
+    from .models import User
 
     @app.route('/')
     def index():
         return render_template('index.html')
 
-    @app.route('/content')
-    def content():
-        return render_template('content.html')
+    @app.route('/about')
+    def about():
+        return render_template('about.html')
+
+    @app.route('/contact')
+    def contact():
+        return render_template('contact.html')
 
     @app.route('/quiz', methods=['GET', 'POST'])
     def quiz():
@@ -47,5 +51,16 @@ def create_app():
             db.session.commit()
             return redirect(url_for('index'))
         return render_template('register.html')
+
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        if request.method == 'POST':
+            email = request.form['email']
+            password = request.form['password']
+            user = User.query.filter_by(email=email).first()
+            if user and bcrypt.check_password_hash(user.password_hash, password):
+                login_user(user)
+                return redirect(url_for('index'))
+        return render_template('login.html')
 
     return app
