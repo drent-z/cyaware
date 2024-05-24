@@ -3,26 +3,27 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<section class="container">
-    <h1>Register</h1>
-    <form action="/register" method="post" class="contact-form">
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" class="form-control" required>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Register</h2>
+                <form action="{{ url_for('register') }}" method="POST" class="contact-form">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.username.label }} {{ form.username(class="form-control", placeholder="Enter your username") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email.label }} {{ form.email(class="form-control", placeholder="Enter your email") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label }} {{ form.password(class="form-control", placeholder="Enter your password") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.confirm_password.label }} {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirm-password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
-</section>
+    </div>
 {% endblock %}

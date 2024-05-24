@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyAware</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
@@ -28,7 +28,7 @@
             <h1 class="glitch" data-text="Welcome to CyAware">Welcome to CyAware</h1>
         </div>
         <p>Your go-to platform for cybersecurity training and awareness.</p>
-        <a href="/register" class="cta-button">Get Started</a>
+        <a href="/register" class="cta-button fancy-button">Get Started</a>
     </section>
 
     <section class="features">
@@ -50,6 +50,6 @@
         <p>&copy; 2024 CyAware. All rights reserved.</p>
     </footer>
 
-    <script src="scripts.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
