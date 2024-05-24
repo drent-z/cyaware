@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     // Navbar toggle functionality
-    document.getElementById('navbar-toggle').addEventListener('click', function() {
-        var navLinks = document.getElementById('nav-links');
+    document.querySelector('.navbar-toggler').addEventListener('click', function() {
+        var navLinks = document.querySelector('.navbar-collapse');
         navLinks.classList.toggle('show');
     });
 });
