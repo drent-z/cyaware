@@ -20,6 +20,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 header {
@@ -47,6 +48,7 @@ header {
     background: none;
     border: none;
     color: var(--navbar-color);
+    cursor: pointer;
 }
 
 .nav-links {
@@ -288,6 +290,10 @@ footer {
         gap: 0;
     }
 
+    .nav-links.active {
+        display: flex;
+    }
+
     .nav-links a {
         padding: 1rem;
         border-top: 1px solid var(--navbar-color);
@@ -324,6 +330,7 @@ footer {
         padding: 1rem 0;
     }
 }
+
 .contact-form {
     background-color: #1a1a1a;
     padding: 2rem;
