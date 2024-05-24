@@ -1,4 +1,5 @@
-import { motion, animate } from "framer-motion";
+// Import Framer Motion functions
+import { motion, useAnimation } from 'framer-motion';
 
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -30,8 +31,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     // Apply Framer Motion animations
-    const features = document.querySelectorAll('.feature-box');
-    features.forEach(feature => {
-        animate(feature, { opacity: 1, y: 0 }, { duration: 0.5, ease: "easeOut" });
+    const heroSection = document.getElementById('hero-section');
+    const featuresSection = document.getElementById('features-section');
+    const featureBoxes = document.querySelectorAll('.feature-box');
+
+    // Animate Hero Section
+    if (heroSection) {
+        motion(heroSection, {
+            initial: { opacity: 0, y: -50 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 1, ease: 'easeOut' }
+        });
+    }
+
+    // Animate Features Section
+    if (featuresSection) {
+        motion(featuresSection, {
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+            transition: { duration: 1.5, ease: 'easeOut' }
+        });
+    }
+
+    // Animate Feature Boxes
+    featureBoxes.forEach((featureBox, index) => {
+        motion(featureBox, {
+            initial: { opacity: 0, y: 50 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.5, delay: index * 0.2, ease: 'easeOut' }
+        });
     });
 });
