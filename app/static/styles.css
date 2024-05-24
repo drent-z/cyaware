@@ -76,8 +76,8 @@ header {
 .typing-container {
     display: inline-block;
     position: relative;
-    min-width: 20ch; /* Adjust based on your preference */
-    height: 3rem; /* Ensure fixed height */
+    min-width: 20ch;
+    height: 3rem;
 }
 
 .hero h1 {
@@ -89,12 +89,12 @@ header {
 }
 
 @keyframes rainbow {
-    0% {color: #ff0000;}
-    20% {color: #ffa500;}
-    40% {color: #ffff00;}
-    60% {color: #008000;}
-    80% {color: #0000ff;}
-    100% {color: #4b0082;}
+    0% { color: #ff0000; }
+    20% { color: #ffa500; }
+    40% { color: #ffff00; }
+    60% { color: #008000; }
+    80% { color: #0000ff; }
+    100% { color: #4b0082; }
 }
 
 .hero p {
@@ -362,4 +362,13 @@ footer {
 
 .navbar-collapse {
     background-color: #1a1a1a;
+}
+
+@keyframes hackerAnimation {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+}
+.nav-links.active {
+    animation: hackerAnimation 0.5s forwards;
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyAware</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -50,6 +50,10 @@
         <p>&copy; 2024 CyAware. All rights reserved.</p>
     </footer>
 
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script>
+        document.getElementById('navbar-toggle').onclick = function() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

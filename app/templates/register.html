@@ -1,29 +1,59 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for CyAware</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="/" class="navbar-brand glitch" data-text="CyAware">CyAware</a>
+            <button class="navbar-toggle" id="navbar-toggle">
+                &#9776;
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
+        </nav>
+    </header>
 
-{% block title %}Register{% endblock %}
-
-{% block content %}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2 class="text-center mb-4">Register</h2>
-                <form action="{{ url_for('register') }}" method="POST" class="contact-form">
-                    {{ form.hidden_tag() }}
-                    <div class="form-group">
-                        {{ form.username.label }} {{ form.username(class="form-control", placeholder="Enter your username") }}
-                    </div>
-                    <div class="form-group">
-                        {{ form.email.label }} {{ form.email(class="form-control", placeholder="Enter your email") }}
-                    </div>
-                    <div class="form-group">
-                        {{ form.password.label }} {{ form.password(class="form-control", placeholder="Enter your password") }}
-                    </div>
-                    <div class="form-group">
-                        {{ form.confirm_password.label }} {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Register</button>
-                </form>
+    <section class="container">
+        <h1>Register</h1>
+        <form action="/register" method="post" class="contact-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
             </div>
-        </div>
-    </div>
-{% endblock %}
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 CyAware. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('navbar-toggle').onclick = function() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
