@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 document.addEventListener('DOMContentLoaded', (event) => {
     // Auto fade out flash messages after 3 seconds
     setTimeout(() => {
