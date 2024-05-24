@@ -1,11 +1,3 @@
-from flask import Blueprint, render_template, url_for, flash, redirect, request
-from flask_login import login_user, current_user, logout_user, login_required
-from app import db, bcrypt
-from app.models import User
-from app.users.forms import RegisterForm, LoginForm
-
-users = Blueprint('users', __name__)
-
 @users.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -34,8 +26,3 @@ def login():
         else:
             flash('Login unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
-
-@users.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('main.index'))

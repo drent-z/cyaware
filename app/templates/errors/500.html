@@ -3,9 +3,9 @@
 {% block title %}Server Error{% endblock %}
 
 {% block content %}
-<div class="error-container">
+<div class="container mt-5 text-center">
     <h1>500 - Server Error</h1>
     <p>Something went wrong on our end. Please try again later.</p>
-    <a href="{{ url_for('main.index') }}">Return to Home</a>
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary">Return to Home</a>
 </div>
 {% endblock %}
