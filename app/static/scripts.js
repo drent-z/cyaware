@@ -30,19 +30,37 @@ document.addEventListener('DOMContentLoaded', (event) => {
         $('.navbar-collapse').toggleClass('show');
     });
 
-    // Framer Motion scroll animation
+    // Scroll hijacking
+    const featureContainer = document.querySelector('.feature-container');
     const featureBoxes = document.querySelectorAll('.feature-box');
     const controls = useAnimation();
 
-    // Function to check if element is in viewport
-    const isInViewport = (element) => {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
+    let currentIndex = 0;
+    let scrollTimeout;
+
+    const scrollHandler = (e) => {
+        e.preventDefault();
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            if (e.deltaY > 0) {
+                if (currentIndex < featureBoxes.length - 1) {
+                    currentIndex++;
+                }
+            } else {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                }
+            }
+            animateFeatures();
+        }, 50);
+    };
+
+    const animateFeatures = () => {
+        controls.start({
+            y: -currentIndex * window.innerHeight,
+            transition: { duration: 0.5, ease: 'easeOut' }
+        });
     };
 
     // Apply Framer Motion animations
@@ -54,27 +72,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
 
-    // Scroll event listener to animate feature boxes when they come into view
-    window.addEventListener('scroll', () => {
-        featureBoxes.forEach((featureBox, index) => {
-            if (isInViewport(featureBox)) {
-                controls.start({
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.5, delay: index * 0.2, ease: 'easeOut' }
-                });
-            }
-        });
-    });
+    // Initial animation setup
+    animateFeatures();
 
-    // Initial check for elements in the viewport
-    featureBoxes.forEach((featureBox) => {
-        if (isInViewport(featureBox)) {
-            controls.start({
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.5, ease: 'easeOut' }
-            });
-        }
-    });
+    // Event listener for scroll
+    window.addEventListener('wheel', scrollHandler, { passive: false });
 });
