@@ -3,7 +3,7 @@
 {% block title %}CyAware{% endblock %}
 
 {% block content %}
-<section class="hero" id="hero-section">
+<section class="hero" id="home">
     <div class="typing-container">
         <h1 class="glitch" data-text="Welcome to CyAware">Welcome to CyAware</h1>
     </div>
@@ -11,20 +11,18 @@
     <a href="{{ url_for('register') }}" class="cta-button">Get Started</a>
 </section>
 
-<section class="features" id="features-section">
-    <div class="feature-container">
-        <div class="feature-box" id="feature1">
-            <h2>Phishing Awareness</h2>
-            <p>Learn how to identify and avoid phishing attacks with our comprehensive training module.</p>
-        </div>
-        <div class="feature-box" id="feature2">
-            <h2>Password Security</h2>
-            <p>Understand the importance of strong passwords and how to create and manage them effectively.</p>
-        </div>
-        <div class="feature-box" id="feature3">
-            <h2>Social Engineering</h2>
-            <p>Equip yourself with the knowledge to recognize and counter social engineering tactics.</p>
-        </div>
+<section class="features">
+    <div class="feature-box">
+        <h2>Phishing Awareness</h2>
+        <p>Learn how to identify and avoid phishing attacks with our comprehensive training module.</p>
+    </div>
+    <div class="feature-box">
+        <h2>Password Security</h2>
+        <p>Understand the importance of strong passwords and how to create and manage them effectively.</p>
+    </div>
+    <div class="feature-box">
+        <h2>Social Engineering</h2>
+        <p>Equip yourself with the knowledge to recognize and counter social engineering tactics.</p>
     </div>
 </section>
 {% endblock %}
