@@ -1,5 +1,5 @@
 // Import Framer Motion functions
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -30,51 +30,49 @@ document.addEventListener('DOMContentLoaded', (event) => {
         $('.navbar-collapse').toggleClass('show');
     });
 
+    // Function to detect if the device is mobile
+    const isMobile = () => window.innerWidth <= 992;
+
     // Scroll hijacking
     const featureContainer = document.querySelector('.feature-container');
     const featureBoxes = document.querySelectorAll('.feature-box');
-    const controls = useAnimation();
 
     let currentIndex = 0;
-    let scrollTimeout;
 
     const scrollHandler = (e) => {
+        if (!isMobile()) return;
+
         e.preventDefault();
 
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            if (e.deltaY > 0) {
-                if (currentIndex < featureBoxes.length - 1) {
-                    currentIndex++;
-                }
-            } else {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                }
+        if (e.deltaY > 0) {
+            if (currentIndex < featureBoxes.length - 1) {
+                currentIndex++;
             }
-            animateFeatures();
-        }, 50);
+        } else {
+            if (currentIndex > 0) {
+                currentIndex--;
+            }
+        }
+
+        animateFeatures();
     };
 
     const animateFeatures = () => {
-        controls.start({
-            y: -currentIndex * window.innerHeight,
-            transition: { duration: 0.5, ease: 'easeOut' }
+        featureBoxes.forEach((box, index) => {
+            if (index < currentIndex) {
+                box.style.transform = `translateY(-100%)`;
+            } else if (index === currentIndex) {
+                box.style.transform = `translateY(0)`;
+            } else {
+                box.style.transform = `translateY(100%)`;
+            }
         });
     };
-
-    // Apply Framer Motion animations
-    featureBoxes.forEach((featureBox, index) => {
-        motion(featureBox, {
-            initial: { opacity: 0, y: 50 },
-            animate: { opacity: 1, y: 0 },
-            transition: { duration: 0.5, delay: index * 0.2, ease: 'easeOut' }
-        });
-    });
 
     // Initial animation setup
     animateFeatures();
 
     // Event listener for scroll
     window.addEventListener('wheel', scrollHandler, { passive: false });
+    window.addEventListener('touchmove', scrollHandler, { passive: false });
 });
