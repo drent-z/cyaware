@@ -20,6 +20,32 @@ header {
     margin-bottom: 20px;
 }
 
+.navbar {
+    background-color: var(--navbar-bg);
+    padding: 1rem;
+}
+
+.navbar-brand {
+    color: var(--navbar-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nav-links {
+    list-style-type: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    color: var(--nav-link-color);
+    text-decoration: none;
+}
+
+.nav-links a:hover {
+    color: var(--nav-link-hover-color);
+}
+
 .hero {
     text-align: center;
     color: white;
