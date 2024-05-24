@@ -324,3 +324,41 @@ footer {
         padding: 1rem 0;
     }
 }
+.contact-form {
+    background-color: #1a1a1a;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.contact-form .form-control {
+    background-color: #121212;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.contact-form .btn-primary {
+    background-color: #00ff00;
+    border-color: #00ff00;
+    color: #000;
+}
+
+.contact-form .btn-primary:hover {
+    background-color: #ff00ff;
+    border-color: #ff00ff;
+    color: #fff;
+}
+.navbar-toggler {
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    color: #00ff00;
+}
+
+.navbar-toggler:focus {
+    outline: none;
+}
+
+.navbar-collapse {
+    background-color: #1a1a1a;
+}
