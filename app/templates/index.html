@@ -1,27 +1,33 @@
-{% extends "layout.html" %}
-
-{% block title %}Home{% endblock %}
-
-{% block content %}
-<div class="hero">
-    <div class="typing-container">
-        <h1 id="typing-text">Welcome to CyAware</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyAware</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="glitch-container">
+        <div class="glitch" data-text="CyAware">CyAware</div>
     </div>
-    <p>Your go-to platform for cybersecurity training and awareness.</p>
-    <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
-</div>
-<div class="features">
-    <div class="feature-box">
-        <h3>Phishing Awareness</h3>
-        <p>Learn how to identify and avoid phishing attacks with our comprehensive training module.</p>
+    <div class="welcome-section">
+        <h1>Welcome to CyAware</h1>
+        <p>Your go-to platform for cybersecurity training and awareness.</p>
+        <a href="/get-started" class="btn-get-started">Get Started</a>
     </div>
-    <div class="feature-box">
-        <h3>Password Security</h3>
-        <p>Understand the importance of strong passwords and how to create and manage them effectively.</p>
+    <div class="cards-section">
+        <div class="card">
+            <h2>Phishing Awareness</h2>
+            <p>Learn how to identify and avoid phishing attacks with our comprehensive training module.</p>
+        </div>
+        <div class="card">
+            <h2>Password Security</h2>
+            <p>Understand the importance of strong passwords and how to create and manage them effectively.</p>
+        </div>
+        <div class="card">
+            <h2>Social Engineering</h2>
+            <p>Equip yourself with the knowledge to recognize and counter social engineering tactics.</p>
+        </div>
     </div>
-    <div class="feature-box">
-        <h3>Social Engineering</h3>
-        <p>Equip yourself with the knowledge to recognize and counter social engineering tactics.</p>
-    </div>
-</div>
-{% endblock %}
+</body>
+</html>
