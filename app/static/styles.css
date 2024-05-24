@@ -135,6 +135,7 @@ header {
 .feature-box {
     width: 100%;
     max-width: 30%;
+    min-width: 250px; /* Set a minimum width */
     background-color: #1a1a1a;
     padding: 2rem;
     margin: 1rem;
@@ -331,6 +332,7 @@ footer {
 
     .feature-box {
         width: 90%;
+        min-width: 250px; /* Ensure minimum width */
         margin: 1rem 0;
     }
 
