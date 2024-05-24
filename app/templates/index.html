@@ -4,18 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyAware</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="glitch-container">
-        <div class="glitch" data-text="CyAware">CyAware</div>
-    </div>
-    <div class="welcome-section">
-        <h1>Welcome to CyAware</h1>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="navbar-brand">CyAware</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="typing-container">
+            <h1 class="glitch" data-text="Welcome to CyAware">Welcome to CyAware</h1>
+        </div>
         <p>Your go-to platform for cybersecurity training and awareness.</p>
-        <a href="/get-started" class="btn-get-started">Get Started</a>
-    </div>
-    <div class="cards-section">
+        <a href="#get-started" class="cta-button">Get Started</a>
+    </section>
+
+    <section class="features">
+        <div class="feature-box">
+            <h2>Phishing Awareness</h2>
+            <p>Learn how to identify and avoid phishing attacks with our comprehensive training module.</p>
+        </div>
+        <div class="feature-box">
+            <h2>Password Security</h2>
+            <p>Understand the importance of strong passwords and how to create and manage them effectively.</p>
+        </div>
+        <div class="feature-box">
+            <h2>Social Engineering</h2>
+            <p>Equip yourself with the knowledge to recognize and counter social engineering tactics.</p>
+        </div>
+    </section>
+
+    <section class="cards-section">
         <div class="card">
             <h2>Phishing Awareness</h2>
             <p>Learn how to identify and avoid phishing attacks with our comprehensive training module.</p>
@@ -28,6 +55,10 @@
             <h2>Social Engineering</h2>
             <p>Equip yourself with the knowledge to recognize and counter social engineering tactics.</p>
         </div>
-    </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 CyAware. All rights reserved.</p>
+    </footer>
 </body>
 </html>
