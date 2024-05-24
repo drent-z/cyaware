@@ -1,0 +1,15 @@
+{
+  "name": "cyaware",
+  "version": "1.0.0",
+  "description": "![Heroku](https://img.shields.io/badge/Deployed%20on-Heroku-7056bf?logo=heroku) ![Python](https://img.shields.io/badge/Built%20with-Python-3776ab?logo=python) ![Flask](https://img.shields.io/badge/Framework-Flask-000000?logo=flask) ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-316192?logo=postgresql) ![License](https://img.shields.io/badge/License-MIT-brightgreen)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "framer-motion": "^11.2.6"
+  }
+}
