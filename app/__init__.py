@@ -10,6 +10,10 @@ migrate = Migrate()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')):
     app = Flask(__name__)
     app.config.from_object(config_class)
