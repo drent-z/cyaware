@@ -9,6 +9,8 @@ from sqlalchemy.exc import SQLAlchemyError
 users = Blueprint('users', __name__)
 
 @users.route('/register', methods=['GET', 'POST'])
+@csrf.exempt
+@limiter.limit("5 per minute")
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
@@ -29,14 +31,18 @@ def register():
             user = User(username=form.username.data, email=form.email.data, password_hash=hashed_password)
             db.session.add(user)
             db.session.commit()
+            app.logger.info(f'User {form.username.data} registered successfully.')
             flash('Your account has been created! You are now able to log in', 'success')
             return redirect(url_for('users.login'))
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             db.session.rollback()
+            app.logger.error(f'Error creating user: {str(e)}')
             flash('An error occurred while creating your account. Please try again.', 'danger')
     return render_template('register.html', title='Register', form=form)
 
 @users.route('/login', methods=['GET', 'POST'])
+@csrf.exempt
+@limiter.limit("10 per minute")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
@@ -46,17 +52,21 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
             if user and bcrypt.check_password_hash(user.password_hash, form.password.data):
                 login_user(user, remember=form.remember_me.data)
+                app.logger.info(f'User {form.email.data} logged in successfully.')
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('main.index'))
             else:
+                app.logger.warning(f'Failed login attempt for user {form.email.data}.')
                 flash('Login unsuccessful. Please check email and password', 'danger')
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
+            app.logger.error(f'Error logging in user: {str(e)}')
             flash('An error occurred while logging in. Please try again.', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 @users.route('/logout')
 def logout():
     logout_user()
+    app.logger.info(f'User {current_user.email} logged out.')
     return redirect(url_for('main.index'))
 
 @users.route('/profile')
@@ -65,8 +75,8 @@ def profile():
     return render_template('profile.html', title='Profile', user=current_user)
 
 @users.route('/validate/<field>', methods=['POST'])
-@csrf.exempt  # Add this to exempt CSRF protection for this route
-@limiter.limit("5 per minute")  # Limit the number of requests to prevent abuse
+@csrf.exempt
+@limiter.limit("30 per minute")
 def validate_field(field):
     data = request.get_json()
     value = data.get('value', '')

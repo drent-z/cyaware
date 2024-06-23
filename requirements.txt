@@ -5,6 +5,7 @@ Flask-Bcrypt
 Flask-Login
 Flask-WTF
 Flask-Limiter
+Flask-Session
 gunicorn
 Pillow
 redis
