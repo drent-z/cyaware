@@ -7,27 +7,125 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center mb-4">Register</h2>
-            <form action="{{ url_for('users.register') }}" method="POST">
+            <form id="registerForm" action="{{ url_for('users.register') }}" method="POST">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {{ form.username.label(class="form-label") }}
                     {{ form.username(class="form-control", placeholder="Enter your username") }}
+                    <div id="usernameFeedback" class="text-danger"></div>
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-control", placeholder="Enter your email") }}
+                    <div id="emailFeedback" class="text-danger"></div>
                 </div>
                 <div class="form-group">
                     {{ form.password.label(class="form-label") }}
-                    {{ form.password(class="form-control", placeholder="Enter your password") }}
+                    <div class="input-group">
+                        {{ form.password(class="form-control", placeholder="Enter your password") }}
+                        <div class="input-group-append">
+                            <span class="input-group-text" onclick="togglePasswordVisibility()"><i class="fa fa-eye" id="togglePasswordIcon"></i></span>
+                        </div>
+                    </div>
+                    <div id="passwordFeedback" class="text-danger"></div>
                 </div>
                 <div class="form-group">
                     {{ form.confirm_password.label(class="form-label") }}
                     {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
+                    <div id="confirmPasswordFeedback" class="text-danger"></div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+function togglePasswordVisibility() {
+    const passwordField = document.querySelector('input[name="password"]');
+    const icon = document.getElementById('togglePasswordIcon');
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const usernameInput = document.querySelector('input[name="username"]');
+    const emailInput = document.querySelector('input[name="email"]');
+    const passwordInput = document.querySelector('input[name="password"]');
+    const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
+
+    usernameInput.addEventListener('input', function () {
+        validateField('username', usernameInput.value, 'usernameFeedback');
+    });
+
+    emailInput.addEventListener('input', function () {
+        validateField('email', emailInput.value, 'emailFeedback');
+    });
+
+    passwordInput.addEventListener('input', function () {
+        validatePassword(passwordInput.value, 'passwordFeedback');
+    });
+
+    confirmPasswordInput.addEventListener('input', function () {
+        validateConfirmPassword(passwordInput.value, confirmPasswordInput.value, 'confirmPasswordFeedback');
+    });
+});
+
+function validateField(field, value, feedbackElementId) {
+    fetch(`/validate/${field}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+        },
+        body: JSON.stringify({ value: value })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const feedbackElement = document.getElementById(feedbackElementId);
+        if (data.valid) {
+            feedbackElement.textContent = '';
+        } else {
+            feedbackElement.textContent = data.message;
+        }
+    });
+}
+
+function validatePassword(password, feedbackElementId) {
+    const feedbackElement = document.getElementById(feedbackElementId);
+    let message = '';
+    if (password.length < 8) {
+        message += 'Password must be at least 8 characters long. ';
+    }
+    if (!/[A-Z]/.test(password)) {
+        message += 'Password must contain at least one uppercase letter. ';
+    }
+    if (!/[a-z]/.test(password)) {
+        message += 'Password must contain at least one lowercase letter. ';
+    }
+    if (!/[0-9]/.test(password)) {
+        message += 'Password must contain at least one digit. ';
+    }
+    if (!/[@$!%*?&]/.test(password)) {
+        message += 'Password must contain at least one special character (@$!%*?&). ';
+    }
+    feedbackElement.textContent = message;
+}
+
+function validateConfirmPassword(password, confirmPassword, feedbackElementId) {
+    const feedbackElement = document.getElementById(feedbackElementId);
+    if (password !== confirmPassword) {
+        feedbackElement.textContent = 'Passwords do not match.';
+    } else {
+        feedbackElement.textContent = '';
+    }
+}
+</script>
 {% endblock %}

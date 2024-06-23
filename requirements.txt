@@ -4,4 +4,6 @@ Flask-Migrate
 Flask-Bcrypt
 Flask-Login
 Flask-WTF
+Flask-Limiter
 gunicorn
+Pillow

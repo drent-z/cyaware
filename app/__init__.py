@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-import os
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -12,11 +11,13 @@ login_manager = LoginManager()
 
 @login_manager.user_loader
 def load_user(user_id):
+    from app.models import User
     return User.query.get(int(user_id))
 
-def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')):
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
     db.init_app(app)
     migrate.init_app(app, db)
