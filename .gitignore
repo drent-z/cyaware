@@ -143,3 +143,4 @@ app/__pycache__/__init__.cpython-39.pyc
 !app/errors/handlers.py
 !manage.py
 !requirements.txt
+.DS_Store
