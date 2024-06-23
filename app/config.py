@@ -3,6 +3,7 @@ import os
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'your_default_secret_key')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///site.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = os.getenv('MAILGUN_SMTP_SERVER', 'smtp.mailgun.org')
     MAIL_PORT = int(os.getenv('MAILGUN_SMTP_PORT', 587))
     MAIL_USE_TLS = True
