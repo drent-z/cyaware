@@ -11,7 +11,6 @@ import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
 import os
 import ssl
-import certifi
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -21,17 +20,14 @@ csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address)
 
 # Use REDIS_TLS_URL for secure connection
-redis_url = os.getenv('REDIS_TLS_URL', 'rediss://:p15879d51ee7c55ce1c05b88ce5dcd5aba46ff58dc872e3322774ccd866801bb8@ec2-34-195-55-195.compute-1.amazonaws.com:9150')
+redis_tls_url = os.getenv('REDIS_TLS_URL')
 
-# Create an SSL context that uses the default CA certificates from certifi
-ssl_context = ssl.create_default_context(cafile=certifi.where())
-
-# Create Redis client with the custom SSL context
-redis_client = redis.Redis.from_url(redis_url, ssl_cert_reqs='required', ssl_ca_certs=certifi.where())
+# Create Redis client using REDIS_TLS_URL and verify SSL certificate
+redis_client = redis.StrictRedis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='required')
 
 limiter = Limiter(
     key_func=get_remote_address,
-    storage_uri=redis_url,
+    storage_uri=redis_tls_url,
     default_limits=["200 per day", "50 per hour"]
 )
 
