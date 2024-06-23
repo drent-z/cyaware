@@ -10,6 +10,7 @@ import redis
 import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
 import os
+import ssl
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,7 +21,13 @@ limiter = Limiter(key_func=get_remote_address)
 
 # Setup Redis for rate limiting
 redis_url = os.getenv('REDIS_URL', 'rediss://:p15879d51ee7c55ce1c05b88ce5dcd5aba46ff58dc872e3322774ccd866801bb8@ec2-34-195-55-195.compute-1.amazonaws.com:9150')
-redis_client = redis.Redis.from_url(redis_url)
+
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+
+redis_client = redis.Redis.from_url(redis_url, ssl=True, ssl_cert_reqs=None, ssl_context=ssl_context)
+
 limiter = Limiter(
     get_remote_address,
     storage_uri=redis_url,
