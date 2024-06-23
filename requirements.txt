@@ -9,5 +9,4 @@ Flask-Session
 Flask-Mail
 gunicorn
 Pillow
-redis
 itsdangerous
