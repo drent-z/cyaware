@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -9,7 +10,6 @@ from flask_wtf import CSRFProtect
 from flask_mail import Mail
 import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
-import os
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -27,6 +27,9 @@ def load_user(user_id):
 def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    # Explicitly set SQLAlchemy Database URI from the environment variable
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///site.db')
 
     db.init_app(app)
     migrate.init_app(app, db)
