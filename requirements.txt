@@ -6,7 +6,8 @@ Flask-Login
 Flask-WTF
 Flask-Limiter
 Flask-Session
+Flask-Mail
 gunicorn
 Pillow
 redis
-certifi
+itsdangerous

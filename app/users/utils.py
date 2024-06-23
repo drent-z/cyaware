@@ -1,17 +1,126 @@
+from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer
+from app import mail, db
+from flask import url_for, current_app
+from app.models import User
 import os
-import secrets
-from PIL import Image
-from flask import current_app
 
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
+def generate_confirmation_token(email):
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=current_app.config['SECURITY_PASSWORD_SALT'])
 
-    output_size = (125, 125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'], max_age=expiration)
+    except:
+        return False
+    return email
 
-    return picture_fn
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender=current_app.config['MAIL_DEFAULT_SENDER'],
+                  recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('users.reset_token', token=token, _external=True)}
+
+If you did not make this request then simply ignore this email and no changes will### Updated Structure
+
+Let's update your project structure with new files and add email verification and password reset functionalities.
+
+### Project Structure
+
+- `app/`
+  - `__init__.py`
+  - `models.py`
+  - `users/`
+    - `routes.py`
+    - `forms.py`
+    - `utils.py`
+  - `templates/`
+    - `email/`
+      - `activate.html`
+    - `reset_request.html`
+    - `reset_password.html`
+
+### `app/__init__.py`
+```python
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_wtf import CSRFProtect
+import redis
+import logging
+from logging.handlers import RotatingFileHandler, SysLogHandler
+import os
+
+db = SQLAlchemy()
+migrate = Migrate()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
+csrf = CSRFProtect()
+limiter = Limiter(key_func=get_remote_address)
+
+# Use REDIS_TLS_URL for secure connection
+redis_tls_url = os.getenv('REDIS_TLS_URL')
+
+# Create Redis client using REDIS_TLS_URL and handle SSL certificates
+redis_client = redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
+
+limiter = Limiter(
+    key_func=get_remote_address,
+    storage_uri=redis_tls_url,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+@login_manager.user_loader
+def load_user(user_id):
+    from app.models import User
+    return User.query.get(int(user_id))
+
+def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    csrf.init_app(app)
+    limiter.init_app(app)
+
+    login_manager.login_view = 'users.login'
+    login_manager.login_message = 'You need to login to access this page.'
+    login_manager.login_message_category = 'info'
+
+    from app.users.routes import users
+    from app.main.routes import main
+    from app.errors.handlers import errors
+    app.register_blueprint(users)
+    app.register_blueprint(main)
+    app.register_blueprint(errors)
+
+    # Set up logging
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    file_handler = RotatingFileHandler('logs/cyaware.log', maxBytes=10240, backupCount=10)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+
+    # Papertrail logging
+    papertrail_host = os.getenv('PAPERTRAIL_HOST', 'logs3.papertrailapp.com')
+    papertrail_port = int(os.getenv('PAPERTRAIL_PORT', 12345))
+    papertrail_handler = SysLogHandler(address=(papertrail_host, papertrail_port))
+    papertrail_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    app.logger.addHandler(papertrail_handler)
+
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('CyAware startup')
+
+    return app

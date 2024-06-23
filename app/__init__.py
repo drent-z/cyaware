@@ -6,6 +6,8 @@ from flask_login import LoginManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_wtf import CSRFProtect
+from flask_mail import Mail
+import redis
 import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
 import os
@@ -16,15 +18,17 @@ bcrypt = Bcrypt()
 login_manager = LoginManager()
 csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address)
+mail = Mail()
 
-# Comment out or remove Redis-related lines
-# redis_tls_url = os.getenv('REDIS_TLS_URL')
-# redis_client = redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
+# Use REDIS_TLS_URL for secure connection
+redis_tls_url = os.getenv('REDIS_TLS_URL')
 
-# Use in-memory storage for rate limiting
+# Create Redis client using REDIS_TLS_URL and handle SSL certificates
+redis_client = redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
+
 limiter = Limiter(
     key_func=get_remote_address,
-    storage_uri="memory://",
+    storage_uri=redis_tls_url,
     default_limits=["200 per day", "50 per hour"]
 )
 
@@ -43,6 +47,7 @@ def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')
     login_manager.init_app(app)
     csrf.init_app(app)
     limiter.init_app(app)
+    mail.init_app(app)
 
     login_manager.login_view = 'users.login'
     login_manager.login_message = 'You need to login to access this page.'
