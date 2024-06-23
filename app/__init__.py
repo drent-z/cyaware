@@ -19,11 +19,6 @@ csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address)
 mail = Mail()
 
-limiter = Limiter(
-    key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
-)
-
 @login_manager.user_loader
 def load_user(user_id):
     from app.models import User

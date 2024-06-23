@@ -10,3 +10,4 @@ Flask-Mail
 gunicorn
 Pillow
 itsdangerous
+email-validator

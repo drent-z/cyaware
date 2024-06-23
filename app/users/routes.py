@@ -1,13 +1,10 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
+from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from app import db, bcrypt, mail
+from app import db, bcrypt
 from app.models import User
 from app.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                              RequestResetForm, ResetPasswordForm)
-from app.users.utils import save_picture, send_reset_email, generate_confirmation_token, confirm_token
-from flask_mail import Message
-from itsdangerous import URLSafeTimedSerializer
-from datetime import datetime
+from app.users.utils import save_picture, send_reset_email, send_verification_email
 
 users = Blueprint('users', __name__)
 
@@ -21,32 +18,10 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        token = generate_confirmation_token(user.email)
-        confirm_url = url_for('users.confirm_email', token=token, _external=True)
-        html = render_template('email/activate.html', confirm_url=confirm_url)
-        subject = "Please confirm your email"
-        send_reset_email(user.email, subject, html)
-        flash('A confirmation email has been sent via email.', 'success')
+        send_verification_email(user)
+        flash('Your account has been created! A verification email has been sent to your email address.', 'success')
         return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
-
-@users.route('/confirm/<token>')
-def confirm_email(token):
-    try:
-        email = confirm_token(token)
-    except:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-        return redirect(url_for('main.home'))
-    user = User.query.filter_by(email=email).first_or_404()
-    if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
-    else:
-        user.confirmed = True
-        user.confirmed_on = datetime.utcnow()
-        db.session.add(user)
-        db.session.commit()
-        flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('main.home'))
 
 @users.route("/login", methods=['GET', 'POST'])
 def login():
@@ -56,11 +31,11 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
+            login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
+            flash('Login unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 @users.route("/logout")
@@ -104,7 +79,7 @@ def reset_token(token):
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     user = User.verify_reset_token(token)
-    if not user:
+    if user is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('users.reset_request'))
     form = ResetPasswordForm()
@@ -114,4 +89,4 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
-    return render_template('reset_password.html', title='Reset Password', form=form)
+    return render_template('reset_token.html', title='Reset Password', form=form)
