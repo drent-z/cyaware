@@ -18,15 +18,21 @@ login_manager = LoginManager()
 csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address)
 
-# Use REDIS_TLS_URL for secure connection
-redis_tls_url = os.getenv('REDIS_TLS_URL')
+def create_redis_client():
+    # Use REDIS_TLS_URL for secure connection
+    redis_tls_url = os.getenv('REDIS_TLS_URL')
 
-# Create Redis client using REDIS_TLS_URL and handle SSL certificates
-redis_client = redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
+    if not redis_tls_url:
+        raise ValueError("The REDIS_TLS_URL environment variable is not set.")
+
+    # Create Redis client using REDIS_TLS_URL and handle SSL certificates
+    return redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
+
+redis_client = create_redis_client()
 
 limiter = Limiter(
     key_func=get_remote_address,
-    storage_uri=redis_tls_url,
+    storage_uri=os.getenv('REDIS_TLS_URL', ''),
     default_limits=["200 per day", "50 per hour"]
 )
 
