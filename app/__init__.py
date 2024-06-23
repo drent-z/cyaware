@@ -26,7 +26,7 @@ ssl_context = ssl.create_default_context()
 ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
 
-redis_client = redis.Redis.from_url(redis_url, ssl=True, ssl_cert_reqs=None, ssl_context=ssl_context)
+redis_client = redis.StrictRedis.from_url(redis_url, ssl=True, ssl_cert_reqs=None, ssl_context=ssl_context)
 
 limiter = Limiter(
     get_remote_address,
