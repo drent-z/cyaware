@@ -9,3 +9,4 @@ Flask-Session
 gunicorn
 Pillow
 redis
+certifi
