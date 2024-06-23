@@ -11,3 +11,4 @@ gunicorn
 Pillow
 itsdangerous
 email-validator
+psycopg2-binary
