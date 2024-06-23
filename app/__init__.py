@@ -19,10 +19,11 @@ csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address)
 
 # Setup Redis for rate limiting
-redis_client = redis.Redis(host='localhost', port=6379, db=0)
+redis_url = os.getenv('REDIS_URL', 'rediss://:p15879d51ee7c55ce1c05b88ce5dcd5aba46ff58dc872e3322774ccd866801bb8@ec2-34-195-55-195.compute-1.amazonaws.com:9150')
+redis_client = redis.Redis.from_url(redis_url)
 limiter = Limiter(
     get_remote_address,
-    storage_uri="redis://localhost:6379",
+    storage_uri=redis_url,
     default_limits=["200 per day", "50 per hour"]
 )
 
@@ -61,13 +62,12 @@ def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
 
-    # Setup SysLogHandler for Papertrail
-    if os.getenv('PAPERTRAIL_HOST') and os.getenv('PAPERTRAIL_PORT'):
-        syslog_handler = SysLogHandler(address=(os.getenv('PAPERTRAIL_HOST'), int(os.getenv('PAPERTRAIL_PORT'))))
-        syslog_handler.setLevel(logging.INFO)
-        syslog_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
-        syslog_handler.setFormatter(syslog_formatter)
-        app.logger.addHandler(syslog_handler)
+    # Papertrail logging
+    papertrail_host = os.getenv('PAPERTRAIL_HOST', 'logs3.papertrailapp.com')
+    papertrail_port = int(os.getenv('PAPERTRAIL_PORT', 12345))
+    papertrail_handler = SysLogHandler(address=(papertrail_host, papertrail_port))
+    papertrail_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    app.logger.addHandler(papertrail_handler)
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('CyAware startup')
