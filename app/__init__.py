@@ -28,8 +28,11 @@ def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # Explicitly set SQLAlchemy Database URI from the environment variable
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('CUSTOM_DATABASE_URL', 'sqlite:///site.db')
+    # Use the new environment variable for the database URL
+    database_url = os.getenv('DATABASE_URL', 'sqlite:///site.db')
+    if database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql+psycopg2://')
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
     db.init_app(app)
     migrate.init_app(app, db)
