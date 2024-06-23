@@ -27,7 +27,7 @@ redis_url = os.getenv('REDIS_URL', 'rediss://:p15879d51ee7c55ce1c05b88ce5dcd5aba
 ssl_context = ssl.create_default_context(cafile=certifi.where())
 
 # Create Redis client with the custom SSL context
-redis_client = redis.StrictRedis.from_url(redis_url, ssl_context=ssl_context)
+redis_client = redis.StrictRedis.from_url(redis_url, ssl_cert_reqs='required', ssl_ca_certs=certifi.where())
 
 limiter = Limiter(
     key_func=get_remote_address,

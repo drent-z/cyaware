@@ -41,8 +41,6 @@ migrations/
 node_modules/
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -133,6 +131,15 @@ app/.DS_Store
 app/__pycache__/models.cpython-39.pyc
 app/__pycache__/__init__.cpython-39.pyc
 .DS_Store
-/app/__pycache__
 /logs
 .DS_Store
+
+# Include necessary directories and files for debugging
+!app/__init__.py
+!app/config.py
+!app/models.py
+!app/main/routes.py
+!app/users/routes.py
+!app/errors/handlers.py
+!manage.py
+!requirements.txt
