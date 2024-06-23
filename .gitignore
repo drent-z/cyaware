@@ -34,9 +34,6 @@ share/python-wheels/
 # Flask
 instance/
 
-# Migrations
-migrations/
-
 # Node modules
 node_modules/
 
