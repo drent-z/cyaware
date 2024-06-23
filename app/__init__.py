@@ -29,7 +29,7 @@ def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')
     app.config.from_object(config_class)
 
     # Explicitly set SQLAlchemy Database URI from the environment variable
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///site.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('CUSTOM_DATABASE_URL', 'sqlite:///site.db')
 
     db.init_app(app)
     migrate.init_app(app, db)
