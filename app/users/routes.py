@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request, Blueprint, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
 from app.models import User
@@ -90,3 +90,19 @@ def reset_token(token):
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+@users.route('/validate/username', methods=['POST'])
+def validate_username():
+    username = request.json.get('username')
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({'message': 'Username is already taken'}), 400
+    return jsonify({'message': 'Username is available'}), 200
+
+@users.route('/validate/email', methods=['POST'])
+def validate_email():
+    email = request.json.get('email')
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({'message': 'Email is already taken'}), 400
+    return jsonify({'message': 'Email is available'}), 200
