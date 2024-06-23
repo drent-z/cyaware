@@ -8,7 +8,7 @@ from flask_limiter.util import get_remote_address
 from flask_wtf import CSRFProtect
 import redis
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import RotatingFileHandler, SysLogHandler
 import os
 
 db = SQLAlchemy()
@@ -60,6 +60,14 @@ def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')
     file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
+
+    # Setup SysLogHandler for Papertrail
+    if os.getenv('PAPERTRAIL_HOST') and os.getenv('PAPERTRAIL_PORT'):
+        syslog_handler = SysLogHandler(address=(os.getenv('PAPERTRAIL_HOST'), int(os.getenv('PAPERTRAIL_PORT'))))
+        syslog_handler.setLevel(logging.INFO)
+        syslog_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
+        syslog_handler.setFormatter(syslog_formatter)
+        app.logger.addHandler(syslog_handler)
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('CyAware startup')
