@@ -10,7 +10,6 @@ import redis
 import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
 import os
-import ssl
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -22,8 +21,8 @@ limiter = Limiter(key_func=get_remote_address)
 # Use REDIS_TLS_URL for secure connection
 redis_tls_url = os.getenv('REDIS_TLS_URL')
 
-# Create Redis client using REDIS_TLS_URL and verify SSL certificate
-redis_client = redis.StrictRedis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='required')
+# Create Redis client using REDIS_TLS_URL and handle SSL certificates
+redis_client = redis.StrictRedis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs=None)
 
 limiter = Limiter(
     key_func=get_remote_address,
