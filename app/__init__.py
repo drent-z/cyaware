@@ -6,7 +6,6 @@ from flask_login import LoginManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_wtf import CSRFProtect
-import redis
 import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
 import os
@@ -18,21 +17,14 @@ login_manager = LoginManager()
 csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address)
 
-def create_redis_client():
-    # Use REDIS_TLS_URL for secure connection
-    redis_tls_url = os.getenv('REDIS_TLS_URL')
+# Comment out or remove Redis-related lines
+# redis_tls_url = os.getenv('REDIS_TLS_URL')
+# redis_client = redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
 
-    if not redis_tls_url:
-        raise ValueError("The REDIS_TLS_URL environment variable is not set.")
-
-    # Create Redis client using REDIS_TLS_URL and handle SSL certificates
-    return redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
-
-redis_client = create_redis_client()
-
+# Use in-memory storage for rate limiting
 limiter = Limiter(
     key_func=get_remote_address,
-    storage_uri=os.getenv('REDIS_TLS_URL', ''),
+    storage_uri="memory://",
     default_limits=["200 per day", "50 per hour"]
 )
 
