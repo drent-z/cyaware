@@ -30,7 +30,7 @@ ssl_context = ssl.create_default_context(cafile=certifi.where())
 redis_client = redis.StrictRedis.from_url(redis_url, ssl_context=ssl_context)
 
 limiter = Limiter(
-    get_remote_address,
+    key_func=get_remote_address,
     storage_uri=redis_url,
     default_limits=["200 per day", "50 per hour"]
 )
