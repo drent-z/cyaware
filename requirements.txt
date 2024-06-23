@@ -13,3 +13,4 @@ itsdangerous
 email-validator
 psycopg2-binary
 requests
+SQLAlchemy[postgresql]
