@@ -3,11 +3,24 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+import redis
 
 db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
+csrf = CSRFProtect()
+
+# Setup Redis for rate limiting
+redis_client = redis.Redis(host='localhost', port=6379, db=0)
+limiter = Limiter(
+    get_remote_address,
+    storage_uri="redis://localhost:6379",
+    default_limits=["200 per day", "50 per hour"]
+)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -23,6 +36,8 @@ def create_app():
     migrate.init_app(app, db)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    csrf.init_app(app)
+    limiter.init_app(app)
 
     login_manager.login_view = 'users.login'
     login_manager.login_message = 'You need to login to access this page.'

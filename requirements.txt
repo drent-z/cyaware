@@ -7,3 +7,4 @@ Flask-WTF
 Flask-Limiter
 gunicorn
 Pillow
+redis

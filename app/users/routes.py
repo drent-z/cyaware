@@ -1,17 +1,12 @@
 from flask import render_template, Blueprint, redirect, url_for, flash, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
-from app import db, bcrypt
+from app import db, bcrypt, csrf, limiter
 from app.models import User, QuizResult, UserProgress
 from app.users.forms import RegisterForm, LoginForm
 from app.users.utils import save_picture
 from sqlalchemy.exc import SQLAlchemyError
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_wtf.csrf import CSRFProtect
 
 users = Blueprint('users', __name__)
-csrf = CSRFProtect()
-limiter = Limiter(get_remote_address, app=None, default_limits=["200 per day", "50 per hour"])
 
 @users.route('/register', methods=['GET', 'POST'])
 def register():
@@ -69,9 +64,9 @@ def logout():
 def profile():
     return render_template('profile.html', title='Profile', user=current_user)
 
-@csrf.exempt
-@limiter.limit("5 per minute")
 @users.route('/validate/<field>', methods=['POST'])
+@csrf.exempt  # Add this to exempt CSRF protection for this route
+@limiter.limit("5 per minute")  # Limit the number of requests to prevent abuse
 def validate_field(field):
     data = request.get_json()
     value = data.get('value', '')

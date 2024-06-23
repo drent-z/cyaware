@@ -126,3 +126,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.DS_Store
+.DS_Store
+.DS_Store
+app/.DS_Store
+app/__pycache__/models.cpython-39.pyc
+app/__pycache__/__init__.cpython-39.pyc
