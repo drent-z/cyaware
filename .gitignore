@@ -135,3 +135,4 @@ app/__pycache__/__init__.cpython-39.pyc
 .DS_Store
 /app/__pycache__
 /logs
+.DS_Store
