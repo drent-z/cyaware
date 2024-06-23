@@ -1,8 +1,8 @@
 from datetime import datetime
-from itsdangerous import URLSafeTimedSerializer as Serializer
+from itsdangerous import TimedSerializer as Serializer
 from flask import current_app
-from app import db, login_manager
 from flask_login import UserMixin
+from app import db, login_manager
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -14,25 +14,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)
-    quiz_results = db.relationship('QuizResult', backref='user', lazy=True)
-
-    def get_reset_token(self, expires_sec=1800):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
-
-    @staticmethod
-    def verify_reset_token(token):
-        s = Serializer(current_app.config['SECRET_KEY'])
-        try:
-            user_id = s.loads(token)['user_id']
-        except:
-            return None
-        return User.query.get(user_id)
+    verified = db.Column(db.Boolean, default=False)
 
     def get_verification_token(self, expires_sec=1800):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expires_sec)
+        return s.dumps({'user_id': self.id})
 
     @staticmethod
     def verify_verification_token(token):
@@ -58,9 +44,10 @@ class Post(db.Model):
 
 class QuizResult(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    quiz_id = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Integer, nullable=False)
     date_taken = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"QuizResult('{self.score}', '{self.date_taken}')"
+        return f"QuizResult('{self.user_id}', '{self.quiz_id}', '{self.score}')"
