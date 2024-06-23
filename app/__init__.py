@@ -7,7 +7,6 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_wtf import CSRFProtect
 from flask_mail import Mail
-import redis
 import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
 import os
@@ -20,15 +19,8 @@ csrf = CSRFProtect()
 limiter = Limiter(key_func=get_remote_address)
 mail = Mail()
 
-# Use REDIS_TLS_URL for secure connection
-redis_tls_url = os.getenv('REDIS_TLS_URL')
-
-# Create Redis client using REDIS_TLS_URL and handle SSL certificates
-redis_client = redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
-
 limiter = Limiter(
     key_func=get_remote_address,
-    storage_uri=redis_tls_url,
     default_limits=["200 per day", "50 per hour"]
 )
 
