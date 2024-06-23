@@ -22,7 +22,7 @@ limiter = Limiter(key_func=get_remote_address)
 redis_tls_url = os.getenv('REDIS_TLS_URL')
 
 # Create Redis client using REDIS_TLS_URL and handle SSL certificates
-redis_client = redis.StrictRedis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs=None)
+redis_client = redis.from_url(redis_tls_url, ssl=True, ssl_cert_reqs='none')
 
 limiter = Limiter(
     key_func=get_remote_address,
