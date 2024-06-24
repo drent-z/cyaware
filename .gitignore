@@ -143,3 +143,5 @@ app/__pycache__/__init__.cpython-39.pyc
 .DS_Store
 app/.DS_Store
 /app/__pycache__
+
+.env
