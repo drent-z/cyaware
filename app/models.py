@@ -8,18 +8,18 @@ from app import db, login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     verified = db.Column(db.Boolean, nullable=False, default=False)
-	
+
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
-    
+
     @staticmethod
     def verify_reset_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -28,11 +28,11 @@ class User(db.Model):
         except:
             return None
         return User.query.get(user_id)
-    
+
     def get_verification_token(self, expires_sec=3600):
         s = Serializer(current_app.config['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
-    
+
     @staticmethod
     def verify_verification_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
