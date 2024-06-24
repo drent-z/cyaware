@@ -11,5 +11,12 @@ class Config:
     MAIL_PASSWORD = os.getenv('MAILGUN_SMTP_PASSWORD')
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
     MAILGUN_DOMAIN = os.getenv('MAILGUN_DOMAIN')
+    MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY')
     PAPERTRAIL_HOST = os.getenv('PAPERTRAIL_HOST')
     PAPERTRAIL_PORT = int(os.getenv('PAPERTRAIL_PORT'))
+
+# Optional: Add logging to check if the variable is loaded correctly
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logging.debug(f'MAILGUN_API_KEY: {os.getenv("MAILGUN_API_KEY")}')
