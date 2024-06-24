@@ -7,8 +7,12 @@ from app.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
 from app.users.utils import save_picture, send_reset_email, send_verification_email
 from flask_mail import Message
 import logging
+import time
 
 users = Blueprint('users', __name__)
+
+# Dictionary to store last verification email request time for each user
+last_verification_request_time = {}
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
@@ -148,3 +152,22 @@ def contact():
             flash('Failed to send your message. Please try again later.', 'danger')
         return redirect(url_for('users.contact'))
     return render_template('contact.html', title='Contact', form=form)
+
+@users.route("/resend_verification", methods=['POST'])
+def resend_verification():
+    email = request.form.get('email')
+    user = User.query.filter_by(email=email).first()
+    if user and not user.verified:
+        current_time = time.time()
+        if user.id in last_verification_request_time:
+            elapsed_time = current_time - last_verification_request_time[user.id]
+            if elapsed_time < 300:  # 5 minutes
+                flash('You can only request a verification email once every 5 minutes.', 'warning')
+                return redirect(url_for('users.login'))
+
+        send_verification_email(user)
+        last_verification_request_time[user.id] = current_time
+        flash('A new verification email has been sent to your email address.', 'success')
+    else:
+        flash('Invalid email or account already verified.', 'danger')
+    return redirect(url_for('users.login'))
