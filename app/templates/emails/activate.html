@@ -35,7 +35,7 @@
         .content p {
             margin: 0 0 10px;
         }
-        .content a {
+        .content a.button {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 20px;
@@ -57,7 +57,7 @@
         </div>
         <div class="content">
             <p>Welcome! Thanks for signing up. Please follow this link to activate your account:</p>
-            <p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+            <p><a href="{{ confirm_url }}" class="button">Activate Account</a></p>
             <p>If you did not sign up for this account, please ignore this email.</p>
         </div>
         <div class="footer">
