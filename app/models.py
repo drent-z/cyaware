@@ -24,8 +24,7 @@ class User(db.Model, UserMixin):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token, max_age=1800)['user_id']
-        except Exception as e:
-            current_app.logger.error(f'Error verifying token: {e}')
+        except:
             return None
         return User.query.get(user_id)
     
