@@ -60,13 +60,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.querySelector('input[name="email"]');
     const passwordInput = document.querySelector('input[name="password"]');
     const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
+    let usernameTimeout, emailTimeout;
 
-    usernameInput.addEventListener('input', function () {
-        validateField('username', usernameInput.value, 'usernameFeedback');
+    usernameInput.addEventListener('keyup', function () {
+        clearTimeout(usernameTimeout);
+        usernameTimeout = setTimeout(() => {
+            validateField('username', usernameInput.value, 'usernameFeedback');
+        }, 1000);
     });
 
-    emailInput.addEventListener('input', function () {
-        validateField('email', emailInput.value, 'emailFeedback');
+    emailInput.addEventListener('keyup', function () {
+        clearTimeout(emailTimeout);
+        emailTimeout = setTimeout(() => {
+            validateField('email', emailInput.value, 'emailFeedback');
+        }, 1000);
     });
 
     passwordInput.addEventListener('input', function () {
@@ -91,9 +98,13 @@ function validateField(field, value, feedbackElementId) {
     .then(data => {
         const feedbackElement = document.getElementById(feedbackElementId);
         if (data.valid) {
-            feedbackElement.textContent = '';
+            feedbackElement.textContent = data.message;
+            feedbackElement.classList.remove('text-danger');
+            feedbackElement.classList.add('text-success');
         } else {
             feedbackElement.textContent = data.message;
+            feedbackElement.classList.remove('text-success');
+            feedbackElement.classList.add('text-danger');
         }
     })
     .catch(error => {

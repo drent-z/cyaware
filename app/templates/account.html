@@ -7,26 +7,70 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2 class="text-center mb-4">Account Settings</h2>
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {{ form.username.label(class="form-label") }}
                     {{ form.username(class="form-control", placeholder="Enter your username") }}
+                    <div id="usernameFeedback" class="text-danger"></div>
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-control", placeholder="Enter your email") }}
-                </div>
-                <div class="form-group">
-                    {{ form.picture.label(class="form-label") }}
-                    {{ form.picture(class="form-control-file") }}
+                    <div id="emailFeedback" class="text-danger"></div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Update</button>
             </form>
-            <div class="mt-3 text-center">
-                <img src="{{ image_file }}" class="img-thumbnail" alt="Profile Picture">
-            </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const usernameInput = document.querySelector('input[name="username"]');
+    const emailInput = document.querySelector('input[name="email"]');
+    let usernameTimeout, emailTimeout;
+
+    usernameInput.addEventListener('keyup', function () {
+        clearTimeout(usernameTimeout);
+        usernameTimeout = setTimeout(() => {
+            validateField('username', usernameInput.value, 'usernameFeedback');
+        }, 1000);
+    });
+
+    emailInput.addEventListener('keyup', function () {
+        clearTimeout(emailTimeout);
+        emailTimeout = setTimeout(() => {
+            validateField('email', emailInput.value, 'emailFeedback');
+        }, 1000);
+    });
+});
+
+function validateField(field, value, feedbackElementId) {
+    fetch(`/validate/${field}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+        },
+        body: JSON.stringify({ value: value })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const feedbackElement = document.getElementById(feedbackElementId);
+        if (data.valid) {
+            feedbackElement.textContent = data.message;
+            feedbackElement.classList.remove('text-danger');
+            feedbackElement.classList.add('text-success');
+        } else {
+            feedbackElement.textContent = data.message;
+            feedbackElement.classList.remove('text-success');
+            feedbackElement.classList.add('text-danger');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+</script>
 {% endblock %}
