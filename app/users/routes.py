@@ -93,7 +93,6 @@ def reset_token(token):
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form, token=token)
 
-
 @users.route('/validate/username', methods=['POST'])
 def validate_username():
     data = request.get_json()
