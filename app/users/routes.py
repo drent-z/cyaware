@@ -117,7 +117,7 @@ def validate_email():
         current_app.logger.info(f'Email validation failed for: {email}')
         return jsonify({'valid': False, 'message': 'Email is already taken'}), 400
     current_app.logger.info(f'Email validation succeeded for: {email}')
-    return jsonify({'valid': True, 'message': 'Email is available'}), 200
+        return jsonify({'valid': True, 'message': 'Email is available'}), 200
 
 @users.route("/verify/<token>")
 def verify_token(token):
@@ -155,19 +155,20 @@ def contact():
 
 @users.route("/resend_verification", methods=['POST'])
 def resend_verification():
-    email = request.form.get('email')
+    data = request.get_json()
+    email = data.get('email')
+    if not email:
+        return jsonify({'message': 'Email is required'}), 400
     user = User.query.filter_by(email=email).first()
     if user and not user.verified:
         current_time = time.time()
         if user.id in last_verification_request_time:
             elapsed_time = current_time - last_verification_request_time[user.id]
             if elapsed_time < 300:  # 5 minutes
-                flash('You can only request a verification email once every 5 minutes.', 'warning')
-                return redirect(url_for('users.login'))
+                return jsonify({'message': 'You can only request a verification email once every 5 minutes.'}), 400
 
         send_verification_email(user)
         last_verification_request_time[user.id] = current_time
-        flash('A new verification email has been sent to your email address.', 'success')
+        return jsonify({'message': 'A new verification email has been sent to your email address.'}), 200
     else:
-        flash('Invalid email or account already verified.', 'danger')
-    return redirect(url_for('users.login'))
+        return jsonify({'message': 'Invalid email or account already verified.'}), 400
