@@ -9,11 +9,11 @@
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {{ form.email.label(class="form-label", for="email") }}
-                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email", id="email", name="email", autocomplete="email") }}
+                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email", id="email", autocomplete="email") }}
                 </div>
                 <div class="form-group">
                     {{ form.password.label(class="form-label", for="password") }}
-                    {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password", id="password", name="password", autocomplete="current-password") }}
+                    {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password", id="password", autocomplete="current-password") }}
                 </div>
                 <div class="form-check mb-3">
                     {{ form.remember_me(class="form-check-input", id="remember_me") }}

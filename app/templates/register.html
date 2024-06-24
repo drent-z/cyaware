@@ -11,18 +11,18 @@
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {{ form.username.label(class="form-label", for="username") }}
-                    {{ form.username(class="form-control bg-dark text-white", placeholder="Enter your username", id="username", name="username", autocomplete="username") }}
+                    {{ form.username(class="form-control bg-dark text-white", placeholder="Enter your username", id="username", autocomplete="username") }}
                     <div id="usernameFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-label", for="email") }}
-                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email", id="email", name="email", autocomplete="email") }}
+                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email", id="email", autocomplete="email") }}
                     <div id="emailFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
                     {{ form.password.label(class="form-label", for="password") }}
                     <div class="input-group">
-                        {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password", id="password", name="password", autocomplete="new-password") }}
+                        {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password", id="password", autocomplete="new-password") }}
                         <div class="input-group-append">
                             <span class="input-group-text" onclick="togglePasswordVisibility()"><i class="fa fa-eye" id="togglePasswordIcon"></i></span>
                         </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     {{ form.confirm_password.label(class="form-label", for="confirm_password") }}
-                    {{ form.confirm_password(class="form-control bg-dark text-white", placeholder="Confirm your password", id="confirm_password", name="confirm_password", autocomplete="new-password") }}
+                    {{ form.confirm_password(class="form-control bg-dark text-white", placeholder="Confirm your password", id="confirm_password", autocomplete="new-password") }}
                     <div id="confirmPasswordFeedback" class="text-danger mt-2"></div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
