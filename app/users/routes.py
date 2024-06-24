@@ -155,8 +155,9 @@ def contact():
 
 @users.route("/resend_verification", methods=['POST'])
 def resend_verification():
-    email = request.form.get('email')
+    email = request.json.get('email')
     user = User.query.filter_by(email=email).first()
+    current_app.logger.debug(f'Received resend verification request for email: {email}')
     if user and not user.verified:
         current_time = time.time()
         if user.id in last_verification_request_time:
@@ -167,7 +168,9 @@ def resend_verification():
 
         send_verification_email(user)
         last_verification_request_time[user.id] = current_time
+        current_app.logger.info(f'Resent verification email to: {email}')
         flash('A new verification email has been sent to your email address.', 'success')
     else:
+        current_app.logger.warning(f'Invalid resend verification attempt for email: {email}')
         flash('Invalid email or account already verified.', 'danger')
     return redirect(url_for('users.login'))
