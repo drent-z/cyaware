@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint, jsonify
+from flask import render_template, url_for, flash, redirect, request, Blueprint, jsonify, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
 from app.models import User
@@ -20,6 +20,7 @@ def register():
         db.session.commit()
         send_verification_email(user)
         flash('Your account has been created! A verification email has been sent to your email address.', 'success')
+        current_app.logger.info(f'New user registered: {user.email}')
         return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -96,7 +97,9 @@ def validate_username():
     username = request.json.get('username')
     user = User.query.filter_by(username=username).first()
     if user:
+        current_app.logger.info(f'Username validation failed for: {username}')
         return jsonify({'message': 'Username is already taken'}), 400
+    current_app.logger.info(f'Username validation succeeded for: {username}')
     return jsonify({'message': 'Username is available'}), 200
 
 @users.route('/validate/email', methods=['POST'])
@@ -104,5 +107,7 @@ def validate_email():
     email = request.json.get('email')
     user = User.query.filter_by(email=email).first()
     if user:
+        current_app.logger.info(f'Email validation failed for: {email}')
         return jsonify({'message': 'Email is already taken'}), 400
+    current_app.logger.info(f'Email validation succeeded for: {email}')
     return jsonify({'message': 'Email is available'}), 200

@@ -24,10 +24,15 @@ If you did not make this request, then simply ignore this email.
     send_email(subject, user.email, body)
 
 def send_email(subject, to, body):
-    return requests.post(
+    response = requests.post(
         f"https://api.mailgun.net/v3/{current_app.config['MAILGUN_DOMAIN']}/messages",
         auth=("api", current_app.config['MAILGUN_API_KEY']),
-        data={"from": f"Excited User <{current_app.config['MAILGUN_SMTP_LOGIN']}>",
+        data={"from": f"CyAware <{current_app.config['MAILGUN_SMTP_LOGIN']}>",
               "to": [to],
               "subject": subject,
               "text": body})
+    if response.status_code == 200:
+        current_app.logger.info(f'Email sent to {to}: {subject}')
+    else:
+        current_app.logger.error(f'Failed to send email to {to}: {response.text}')
+    return response
