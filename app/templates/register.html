@@ -7,22 +7,22 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center mb-4">Register</h2>
-            <form id="registerForm" action="{{ url_for('users.register') }}" method="POST">
+            <form id="registerForm" action="{{ url_for('users.register') }}" method="POST" autocomplete="on">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
-                    {{ form.username.label(class="form-label") }}
-                    {{ form.username(class="form-control bg-dark text-white", placeholder="Enter your username") }}
+                    {{ form.username.label(class="form-label", for="username") }}
+                    {{ form.username(class="form-control bg-dark text-white", placeholder="Enter your username", id="username", name="username", autocomplete="username") }}
                     <div id="usernameFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
-                    {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
+                    {{ form.email.label(class="form-label", for="email") }}
+                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email", id="email", name="email", autocomplete="email") }}
                     <div id="emailFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
-                    {{ form.password.label(class="form-label") }}
+                    {{ form.password.label(class="form-label", for="password") }}
                     <div class="input-group">
-                        {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password") }}
+                        {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password", id="password", name="password", autocomplete="new-password") }}
                         <div class="input-group-append">
                             <span class="input-group-text" onclick="togglePasswordVisibility()"><i class="fa fa-eye" id="togglePasswordIcon"></i></span>
                         </div>
@@ -30,8 +30,8 @@
                     <div id="passwordFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
-                    {{ form.confirm_password.label(class="form-label") }}
-                    {{ form.confirm_password(class="form-control bg-dark text-white", placeholder="Confirm your password") }}
+                    {{ form.confirm_password.label(class="form-label", for="confirm_password") }}
+                    {{ form.confirm_password(class="form-control bg-dark text-white", placeholder="Confirm your password", id="confirm_password", name="confirm_password", autocomplete="new-password") }}
                     <div id="confirmPasswordFeedback" class="text-danger mt-2"></div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
@@ -42,7 +42,7 @@
 
 <script>
 function togglePasswordVisibility() {
-    const passwordField = document.querySelector('input[name="password"]');
+    const passwordField = document.getElementById('password');
     const icon = document.getElementById('togglePasswordIcon');
     if (passwordField.type === 'password') {
         passwordField.type = 'text';
@@ -56,10 +56,10 @@ function togglePasswordVisibility() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const usernameInput = document.querySelector('input[name="username"]');
-    const emailInput = document.querySelector('input[name="email"]');
-    const passwordInput = document.querySelector('input[name="password"]');
-    const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
     let usernameTimeout, emailTimeout;
 
     usernameInput.addEventListener('keyup', function () {

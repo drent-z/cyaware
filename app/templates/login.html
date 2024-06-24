@@ -5,19 +5,19 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center mb-4">Login</h2>
-            <form action="{{ url_for('users.login') }}" method="POST">
+            <form action="{{ url_for('users.login') }}" method="POST" autocomplete="on">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
-                    {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
+                    {{ form.email.label(class="form-label", for="email") }}
+                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email", id="email", name="email", autocomplete="email") }}
                 </div>
                 <div class="form-group">
-                    {{ form.password.label(class="form-label") }}
-                    {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password") }}
+                    {{ form.password.label(class="form-label", for="password") }}
+                    {{ form.password(class="form-control bg-dark text-white", placeholder="Enter your password", id="password", name="password", autocomplete="current-password") }}
                 </div>
                 <div class="form-check mb-3">
-                    {{ form.remember_me(class="form-check-input") }}
-                    {{ form.remember_me.label(class="form-check-label") }}
+                    {{ form.remember_me(class="form-check-input", id="remember_me") }}
+                    {{ form.remember_me.label(class="form-check-label", for="remember_me") }}
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
