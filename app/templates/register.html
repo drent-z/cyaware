@@ -12,12 +12,12 @@
                 <div class="form-group">
                     {{ form.username.label(class="form-label") }}
                     {{ form.username(class="form-control bg-dark text-white", placeholder="Enter your username") }}
-                    <div id="usernameFeedback" class="text-danger"></div>
+                    <div id="usernameFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
-                    <div id="emailFeedback" class="text-danger"></div>
+                    <div id="emailFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
                     {{ form.password.label(class="form-label") }}
@@ -27,12 +27,12 @@
                             <span class="input-group-text" onclick="togglePasswordVisibility()"><i class="fa fa-eye" id="togglePasswordIcon"></i></span>
                         </div>
                     </div>
-                    <div id="passwordFeedback" class="text-danger"></div>
+                    <div id="passwordFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
                     {{ form.confirm_password.label(class="form-label") }}
                     {{ form.confirm_password(class="form-control bg-dark text-white", placeholder="Confirm your password") }}
-                    <div id="confirmPasswordFeedback" class="text-danger"></div>
+                    <div id="confirmPasswordFeedback" class="text-danger mt-2"></div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
             </form>
@@ -98,7 +98,7 @@ function validateField(field, value, feedbackElementId) {
     .then(data => {
         const feedbackElement = document.getElementById(feedbackElementId);
         if (data.valid) {
-            feedbackElement.textContent = data.message;
+            feedbackElement.textContent = '';
             feedbackElement.classList.remove('text-danger');
             feedbackElement.classList.add('text-success');
         } else {

@@ -360,3 +360,28 @@ footer {
         padding: 1rem 0;
     }
 }
+/* Dark mode input field styles */
+input.form-control {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+input.form-control:focus {
+    background-color: #444;
+    color: #fff;
+    border-color: #00ff00;
+}
+
+/* Apply similar styles for other form elements */
+textarea.form-control, select.form-control {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+textarea.form-control:focus, select.form-control:focus {
+    background-color: #444;
+    color: #fff;
+    border-color: #00ff00;
+}

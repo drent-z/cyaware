@@ -1,10 +1,11 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, jsonify, current_app
 from flask_login import login_user, current_user, logout_user, login_required
-from app import db, bcrypt
+from app import db, bcrypt, mail
 from app.models import User
 from app.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
-                             RequestResetForm, ResetPasswordForm)
+                             RequestResetForm, ResetPasswordForm, ContactForm)
 from app.users.utils import save_picture, send_reset_email, send_verification_email
+from flask_mail import Message
 import logging
 
 users = Blueprint('users', __name__)
@@ -121,3 +122,21 @@ def verify_token(token):
     db.session.commit()
     flash('Your account has been verified! You can now log in', 'success')
     return redirect(url_for('users.login'))
+
+@users.route("/contact", methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    if form.validate_on_submit():
+        msg = Message(
+            'Contact Form Submission',
+            sender=form.email.data,
+            recipients=[current_app.config['MAIL_USERNAME']]
+        )
+        msg.body = f'''
+        From: {form.name.data} <{form.email.data}>
+        {form.message.data}
+        '''
+        mail.send(msg)
+        flash('Your message has been sent. Thank you!', 'success')
+        return redirect(url_for('users.contact'))
+    return render_template('contact.html', title='Contact', form=form)

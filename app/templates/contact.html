@@ -3,23 +3,28 @@
 {% block title %}Contact{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Contact Us</h1>
-    <p>If you have any questions, feel free to reach out to us!</p>
-    <form action="#" method="post" class="contact-form">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">Contact Us</h2>
+            <p class="text-center">If you have any questions, feel free to reach out to us!</p>
+            <form action="{{ url_for('users.contact') }}" method="POST" class="contact-form">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control bg-dark text-white", placeholder="Enter your name") }}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
+                </div>
+                <div class="form-group">
+                    {{ form.message.label(class="form-label") }}
+                    {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" class="form-control" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
 </div>
 {% endblock %}
