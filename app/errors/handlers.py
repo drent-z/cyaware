@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from app import db
 
 errors = Blueprint('errors', __name__)
 
@@ -12,4 +13,5 @@ def error_403(error):
 
 @errors.app_errorhandler(500)
 def error_500(error):
+    db.session.rollback()  # Rollback the transaction
     return render_template('errors/500.html'), 500
