@@ -11,6 +11,10 @@
     --cta-bg: #00ff00;
     --cta-hover-bg: #ff00ff;
     --cta-color: #000;
+    --input-bg: #333;
+    --input-border: #444;
+    --input-color: #fff;
+    --input-placeholder: #bbb;
 }
 
 body {
@@ -229,7 +233,7 @@ footer {
         clip: rect(25px, 9999px, 56px, 0);
         transform: skew(0.3deg);
     }
-     40% {
+    40% {
         clip: rect(44px, 9999px, 36px, 0);
         transform: skew(0.3deg);
     }
@@ -281,6 +285,17 @@ footer {
         clip: rect(44px, 9999px, 56px, 0);
         transform: skew(0.3deg);
     }
+}
+
+/* Form Styles */
+.form-control {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--input-color);
+}
+
+.form-control::placeholder {
+    color: var(--input-placeholder);
 }
 
 /* Mobile Styles */
