@@ -114,3 +114,14 @@ def validate_email():
         return jsonify({'valid': False, 'message': 'Email is already taken'}), 400
     current_app.logger.info(f'Email validation succeeded for: {email}')
     return jsonify({'valid': True, 'message': 'Email is available'}), 200
+
+@users.route("/verify/<token>")
+def verify_token(token):
+    user = User.verify_verification_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('users.register'))
+    user.is_verified = True
+    db.session.commit()
+    flash('Your account has been verified! You can now log in', 'success')
+    return redirect(url_for('users.login'))

@@ -28,6 +28,19 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
     
+    def get_verification_token(self, expires_sec=3600):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
+    
+    @staticmethod
+    def verify_verification_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+    
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 

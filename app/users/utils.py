@@ -9,23 +9,25 @@ def save_picture(form_picture):
 def send_reset_email(user):
     token = user.get_reset_token()
     subject = 'Password Reset Request'
+    reset_url = url_for('users.reset_token', token=token, _external=True)
     send_email(
         subject,
         user.email,
         'emails/reset_password.txt',
         'emails/reset_password.html',
-        token=token
+        reset_url=reset_url
     )
 
 def send_verification_email(user):
     token = user.get_verification_token()
     subject = 'Account Verification'
+    confirm_url = url_for('users.verify_token', token=token, _external=True)
     send_email(
         subject,
         user.email,
-        'emails/verify_account.txt',
-        'emails/verify_account.html',
-        token=token
+        'emails/activate.txt',
+        'emails/activate.html',
+        confirm_url=confirm_url
     )
 
 def send_email(subject, to, text_template, html_template, **kwargs):
