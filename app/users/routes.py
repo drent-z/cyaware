@@ -136,7 +136,12 @@ def contact():
         From: {form.name.data} <{form.email.data}>
         {form.message.data}
         '''
-        mail.send(msg)
-        flash('Your message has been sent. Thank you!', 'success')
+        try:
+            mail.send(msg)
+            current_app.logger.info(f'Message sent from {form.email.data}')
+            flash('Your message has been sent. Thank you!', 'success')
+        except Exception as e:
+            current_app.logger.error(f'Failed to send message: {str(e)}')
+            flash('Failed to send your message. Please try again later.', 'danger')
         return redirect(url_for('users.contact'))
     return render_template('contact.html', title='Contact', form=form)
