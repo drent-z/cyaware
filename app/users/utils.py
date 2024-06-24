@@ -15,7 +15,7 @@ If you did not make this request, then simply ignore this email and no changes w
     send_email(subject, user.email, body)
 
 def send_verification_email(user):
-    token = user.get_verification_token()
+    token = user.get_reset_token()
     subject = 'Account Verification'
     body = f'''To verify your account, visit the following link:
 {url_for('users.verify_email', token=token, _external=True)}
