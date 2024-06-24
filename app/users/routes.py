@@ -5,6 +5,7 @@ from app.models import User
 from app.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                              RequestResetForm, ResetPasswordForm)
 from app.users.utils import save_picture, send_reset_email, send_verification_email
+import logging
 
 users = Blueprint('users', __name__)
 
@@ -90,7 +91,12 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
-    return render_template('reset_token.html', title='Reset Password', form=form)
+    
+    # Add debugging statement here
+    logging.debug(f'Loaded reset token page for token: {token}')
+    
+    return render_template('reset_token.html', title='Reset Password', form=form, token=token)
+
 
 @users.route('/validate/username', methods=['POST'])
 def validate_username():
