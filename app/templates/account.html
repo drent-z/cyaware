@@ -7,25 +7,35 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2 class="text-center mb-4">Account Settings</h2>
-            <form method="POST" id="accountForm">
+
+            <!-- Display Account Information -->
+            <div id="accountInfo">
+                <div class="form-group">
+                    <label for="displayUsername" class="form-label">Username</label>
+                    <p id="displayUsername" class="form-control-plaintext">{{ current_user.username }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="displayEmail" class="form-label">Email</label>
+                    <p id="displayEmail" class="form-control-plaintext">{{ current_user.email }}</p>
+                </div>
+                <button id="editButton" class="btn btn-secondary btn-block mt-3">Edit</button>
+            </div>
+
+            <!-- Edit Account Information Form -->
+            <form id="editForm" method="POST" style="display: none;">
                 {{ form.hidden_tag() }}
-                
-                <!-- User Information Section -->
-                <h4 class="mt-4">User Information</h4>
-                <hr>
                 <div class="form-group">
                     {{ form.username.label(class="form-label") }}
-                    {{ form.username(class="form-control", placeholder="Enter your username") }}
+                    {{ form.username(class="form-control bg-dark text-white", placeholder="Enter your username") }}
                     <div id="usernameFeedback" class="text-danger mt-2"></div>
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control", placeholder="Enter your email") }}
+                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
                     <div id="emailFeedback" class="text-danger mt-2"></div>
                 </div>
-                
-                <!-- Update Button -->
-                <button type="submit" class="btn btn-primary btn-block">Update</button>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Update</button>
+                <button id="cancelButton" type="button" class="btn btn-secondary btn-block mt-2">Cancel</button>
             </form>
         </div>
     </div>
@@ -33,11 +43,25 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const accountInfo = document.getElementById('accountInfo');
+    const editForm = document.getElementById('editForm');
+    const editButton = document.getElementById('editButton');
+    const cancelButton = document.getElementById('cancelButton');
+
+    editButton.addEventListener('click', function () {
+        accountInfo.style.display = 'none';
+        editForm.style.display = 'block';
+    });
+
+    cancelButton.addEventListener('click', function () {
+        editForm.style.display = 'none';
+        accountInfo.style.display = 'block';
+    });
+
     const usernameInput = document.querySelector('input[name="username"]');
     const emailInput = document.querySelector('input[name="email"]');
     let usernameTimeout, emailTimeout;
 
-    // Validate username with a 1-second delay after typing stops
     usernameInput.addEventListener('keyup', function () {
         clearTimeout(usernameTimeout);
         usernameTimeout = setTimeout(() => {
@@ -45,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     });
 
-    // Validate email with a 1-second delay after typing stops
     emailInput.addEventListener('keyup', function () {
         clearTimeout(emailTimeout);
         emailTimeout = setTimeout(() => {
