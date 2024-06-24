@@ -34,7 +34,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            if not user.is_verified:
+            if not user.verified:
                 flash('Account not verified. Please check your email to verify your account.', 'warning')
                 return redirect(url_for('users.login'))
             if bcrypt.check_password_hash(user.password, form.password.data):
@@ -122,7 +122,7 @@ def verify_token(token):
     if user is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('users.register'))
-    user.is_verified = True
+    user.verified = True
     db.session.commit()
     flash('Your account has been verified! You can now log in', 'success')
     return redirect(url_for('users.login'))
