@@ -1,5 +1,5 @@
 from datetime import datetime
-from itsdangerous import TimedSerializer as Serializer
+from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin
 from app import db, login_manager
@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
     verified = db.Column(db.Boolean, default=False)
 
     def get_verification_token(self, expires_sec=1800):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expires_sec)
+        s = Serializer(current_app.config['SECRET_KEY'], expires_sec=expires_sec)
         return s.dumps({'user_id': self.id})
 
     @staticmethod
