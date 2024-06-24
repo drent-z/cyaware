@@ -2,7 +2,8 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint,
 from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
 from app.models import User
-from app.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm)
+from app.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
+                             RequestResetForm, ResetPasswordForm)
 from app.users.utils import save_picture, send_reset_email, send_verification_email
 
 users = Blueprint('users', __name__)
@@ -33,11 +34,9 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
-            current_app.logger.info(f'User logged in: {user.email}')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
             flash('Login unsuccessful. Please check email and password', 'danger')
-            current_app.logger.warning(f'Login failed for: {form.email.data}')
     return render_template('login.html', title='Login', form=form)
 
 @users.route("/logout")
@@ -95,20 +94,22 @@ def reset_token(token):
 
 @users.route('/validate/username', methods=['POST'])
 def validate_username():
-    username = request.json.get('username')
+    data = request.get_json()
+    username = data.get('value')
     user = User.query.filter_by(username=username).first()
     if user:
         current_app.logger.info(f'Username validation failed for: {username}')
-        return jsonify({'message': 'Username is already taken'}), 400
+        return jsonify({'valid': False, 'message': 'Username is already taken'}), 400
     current_app.logger.info(f'Username validation succeeded for: {username}')
-    return jsonify({'message': 'Username is available'}), 200
+    return jsonify({'valid': True, 'message': 'Username is available'}), 200
 
 @users.route('/validate/email', methods=['POST'])
 def validate_email():
-    email = request.json.get('email')
+    data = request.get_json()
+    email = data.get('value')
     user = User.query.filter_by(email=email).first()
     if user:
         current_app.logger.info(f'Email validation failed for: {email}')
-        return jsonify({'message': 'Email is already taken'}), 400
+        return jsonify({'valid': False, 'message': 'Email is already taken'}), 400
     current_app.logger.info(f'Email validation succeeded for: {email}')
-    return jsonify({'message': 'Email is available'}), 200
+    return jsonify({'valid': True, 'message': 'Email is available'}), 200
