@@ -37,7 +37,7 @@ function resendVerificationEmail() {
         alert('Please enter your email address first.');
         return;
     }
-    fetch('{{ url_for("users.resend_verification_email") }}', {
+	fetch('{{ url_for("users.resend_verification") }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
