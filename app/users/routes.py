@@ -163,14 +163,13 @@ def resend_verification():
         if user.id in last_verification_request_time:
             elapsed_time = current_time - last_verification_request_time[user.id]
             if elapsed_time < 300:  # 5 minutes
-                flash('You can only request a verification email once every 5 minutes.', 'warning')
-                return redirect(url_for('users.login'))
+                current_app.logger.warning(f'Too soon to request another verification email for email: {email}')
+                return jsonify({'message': 'You can only request a verification email once every 5 minutes.', 'status': 'warning'}), 429
 
         send_verification_email(user)
         last_verification_request_time[user.id] = current_time
         current_app.logger.info(f'Resent verification email to: {email}')
-        flash('A new verification email has been sent to your email address.', 'success')
+        return jsonify({'message': 'A new verification email has been sent to your email address.', 'status': 'success'}), 200
     else:
         current_app.logger.warning(f'Invalid resend verification attempt for email: {email}')
-        flash('Invalid email or account already verified.', 'danger')
-    return redirect(url_for('users.login'))
+        return jsonify({'message': 'Invalid email or account already verified.', 'status': 'danger'}), 400
