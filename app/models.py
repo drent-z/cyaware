@@ -2,7 +2,7 @@ from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin
-from app import db, login_manager
+from app import db, bcrypt, login_manager
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -16,6 +16,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     verified = db.Column(db.Boolean, nullable=False, default=False)
 
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
@@ -24,7 +27,7 @@ class User(db.Model, UserMixin):
     def verify_reset_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
+            user_id = s.loads(token, max_age=1800)['user_id']
         except:
             return None
         return User.query.get(user_id)
@@ -37,11 +40,11 @@ class User(db.Model, UserMixin):
     def verify_verification_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
+            user_id = s.loads(token, max_age=3600)['user_id']
         except:
             return None
         return User.query.get(user_id)
-    
+
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 

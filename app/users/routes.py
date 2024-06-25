@@ -33,21 +33,20 @@ def register():
 @users.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and user.check_password(form.password.data):
-            if user.verified:
+        if user:
+            if not user.verified:
+                flash('Account not verified. Please check your email to verify your account.', 'warning')
+                return render_template('login.html', title='Login', form=form, show_resend_button=True, email=form.email.data)
+            if user.check_password(form.password.data):
                 login_user(user, remember=form.remember_me.data)
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('main.home'))
-            else:
-                flash('Account not verified. Please check your email to verify your account.', 'warning')
-                return render_template('login.html', form=form, show_resend_button=True, email=form.email.data)
-        else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', form=form, show_resend_button=False)
+                return redirect(next_page) if next_page else redirect(url_for('main.index'))
+        flash('Login unsuccessful. Please check email and password', 'danger')
+    return render_template('login.html', title='Login', form=form, show_resend_button=False)
 
 @users.route("/logout")
 def logout():
