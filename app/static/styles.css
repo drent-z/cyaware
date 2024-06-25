@@ -385,3 +385,7 @@ textarea.form-control:focus, select.form-control:focus {
     color: #fff;
     border-color: #00ff00;
 }
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
