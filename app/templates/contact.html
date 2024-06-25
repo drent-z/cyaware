@@ -7,22 +7,22 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center mb-4">Contact Us</h2>
-            <p class="text-center">If you have any questions, feel free to reach out to us!</p>
+            <p class="text-center mb-4">If you have any questions, feel free to reach out to us!</p>
             <form action="{{ url_for('users.contact') }}" method="POST" class="contact-form">
                 {{ form.hidden_tag() }}
-                <div class="form-group">
+                <div class="form-group mb-4">
                     {{ form.name.label(class="form-label") }}
                     {{ form.name(class="form-control bg-dark text-white", placeholder="Enter your name") }}
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-4">
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-4">
                     {{ form.message.label(class="form-label") }}
                     {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button>
             </form>
         </div>
     </div>
