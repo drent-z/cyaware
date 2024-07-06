@@ -159,7 +159,7 @@ def contact():
         recaptcha_token = request.form.get('recaptcha_token')
         project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
         recaptcha_action = 'contact'
-
+        
         # Log form submission and reCAPTCHA token generation
         current_app.logger.info(f"Form submitted with reCAPTCHA token: {recaptcha_token}")
 
@@ -171,6 +171,9 @@ def contact():
                 "siteKey": recaptcha_site_key,
             }
         }
+
+        # Log request body
+        current_app.logger.debug(f"reCAPTCHA request body: {request_body}")
 
         # Send the request to reCAPTCHA Enterprise API
         try:
