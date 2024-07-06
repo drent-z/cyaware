@@ -29,7 +29,7 @@
     </div>
 </div>
 
-<script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
 <script>
 function onSubmit(token) {
     document.getElementById("contact-form").submit();
@@ -37,8 +37,8 @@ function onSubmit(token) {
 
 document.getElementById('contact-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    grecaptcha.enterprise.ready(function() {
-        grecaptcha.enterprise.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
             var recaptchaResponse = document.createElement('input');
             recaptchaResponse.setAttribute('type', 'hidden');
             recaptchaResponse.setAttribute('name', 'recaptcha_token');

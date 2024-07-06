@@ -137,22 +137,21 @@ def contact():
     recaptcha_site_key = current_app.config['RECAPTCHA_SITE_KEY']
     if form.validate_on_submit():
         recaptcha_token = request.form.get('recaptcha_token')
-        api_key = current_app.config['RECAPTCHA_SECRET_KEY']
+        project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
         recaptcha_action = 'contact'
 
-        # Create the request body
-        request_body = {
-            "event": {
-                "token": recaptcha_token,
-                "expectedAction": recaptcha_action,
-                "siteKey": recaptcha_site_key,
+        recaptcha_response = requests.post(
+            'https://recaptchaenterprise.googleapis.com/v1/projects/' + project_id + '/assessments?key=' + current_app.config['RECAPTCHA_SECRET_KEY'],
+            json={
+                'event': {
+                    'token': recaptcha_token,
+                    'siteKey': recaptcha_site_key,
+                    'expectedAction': recaptcha_action
+                }
             }
-        }
+        )
 
-        # Send the HTTP POST request
-        url = f"https://recaptchaenterprise.googleapis.com/v1/projects/{current_app.config['GOOGLE_CLOUD_PROJECT_ID']}/assessments?key={api_key}"
-        response = requests.post(url, json=request_body)
-        recaptcha_result = response.json()
+        recaptcha_result = recaptcha_response.json()
 
         if recaptcha_result.get('tokenProperties', {}).get('valid'):
             msg = Message(
