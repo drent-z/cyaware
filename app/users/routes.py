@@ -134,6 +134,7 @@ def verify_token(token):
 @users.route("/contact", methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
+    recaptcha_site_key = current_app.config['RECAPTCHA_SITE_KEY']
     if form.validate_on_submit():
         recaptcha_token = form.recaptcha_token.data
         recaptcha_response = requests.post(
@@ -165,7 +166,7 @@ def contact():
             return redirect(url_for('users.contact'))
         else:
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
-    return render_template('contact.html', title='Contact', form=form)
+    return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
 
 @users.route("/resend_verification", methods=['POST'])
 def resend_verification():
