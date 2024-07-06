@@ -22,8 +22,8 @@
                     {{ form.message.label(class="form-label") }}
                     {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
                 </div>
-                <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark" data-size="invisible" data-callback="onSubmit"></div>
                 <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+                <input type="hidden" id="recaptcha-token" name="recaptcha_token">
             </form>
         </div>
     </div>
@@ -31,22 +31,20 @@
 
 <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
 <script>
-function onSubmit(token) {
-    document.getElementById("contact-form").submit();
-}
-
-document.getElementById('contact-form').addEventListener('submit', function(event) {
-    event.preventDefault();
     grecaptcha.ready(function() {
         grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
-            var recaptchaResponse = document.createElement('input');
-            recaptchaResponse.setAttribute('type', 'hidden');
-            recaptchaResponse.setAttribute('name', 'recaptcha_token');
-            recaptchaResponse.setAttribute('value', token);
-            document.getElementById('contact-form').appendChild(recaptchaResponse);
-            onSubmit(token);
+            document.getElementById('recaptcha-token').value = token;
         });
     });
-});
+
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
+                document.getElementById('recaptcha-token').value = token;
+                document.getElementById('contact-form').submit();
+            });
+        });
+    });
 </script>
 {% endblock %}
