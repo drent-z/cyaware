@@ -136,17 +136,20 @@ def contact():
     form = ContactForm()
     recaptcha_site_key = current_app.config['RECAPTCHA_SITE_KEY']
     if form.validate_on_submit():
-        recaptcha_token = form.recaptcha_token.data
+        recaptcha_token = request.form.get('recaptcha_token')
         recaptcha_response = requests.post(
-            'https://www.google.com/recaptcha/api/siteverify',
-            data={
-                'secret': current_app.config['RECAPTCHA_SECRET_KEY'],
-                'response': recaptcha_token
+            'https://recaptchaenterprise.googleapis.com/v1/projects/cyaware-1720234770496/assessments?key=' + current_app.config['RECAPTCHA_SECRET_KEY'],
+            json={
+                'event': {
+                    'token': recaptcha_token,
+                    'siteKey': current_app.config['RECAPTCHA_SITE_KEY'],
+                    'expectedAction': 'contact'
+                }
             }
         )
         recaptcha_result = recaptcha_response.json()
 
-        if recaptcha_result['success']:
+        if recaptcha_result['tokenProperties']['valid']:
             msg = Message(
                 'Contact Form Submission',
                 sender=form.email.data,
