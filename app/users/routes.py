@@ -8,6 +8,7 @@ from app.users.utils import save_picture, send_reset_email, send_verification_em
 from flask_mail import Message
 import logging
 import time
+import requests
 
 users = Blueprint('users', __name__)
 
@@ -74,7 +75,7 @@ def reset_request():
         return redirect(url_for('main.index'))
     form = RequestResetForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email(form.email.data).first()
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('users.login'))
@@ -134,23 +135,36 @@ def verify_token(token):
 def contact():
     form = ContactForm()
     if form.validate_on_submit():
-        msg = Message(
-            'Contact Form Submission',
-            sender=form.email.data,
-            recipients=[current_app.config['MAIL_USERNAME']]
+        recaptcha_token = form.recaptcha_token.data
+        recaptcha_response = requests.post(
+            'https://www.google.com/recaptcha/api/siteverify',
+            data={
+                'secret': current_app.config['RECAPTCHA_SECRET_KEY'],
+                'response': recaptcha_token
+            }
         )
-        msg.body = f'''
-        From: {form.name.data} <{form.email.data}>
-        {form.message.data}
-        '''
-        try:
-            mail.send(msg)
-            current_app.logger.info(f'Message sent from {form.email.data}')
-            flash('Your message has been sent. Thank you!', 'success')
-        except Exception as e:
-            current_app.logger.error(f'Failed to send message: {str(e)}')
-            flash('Failed to send your message. Please try again later.', 'danger')
-        return redirect(url_for('users.contact'))
+        recaptcha_result = recaptcha_response.json()
+
+        if recaptcha_result['success']:
+            msg = Message(
+                'Contact Form Submission',
+                sender=form.email.data,
+                recipients=[current_app.config['MAIL_USERNAME']]
+            )
+            msg.body = f'''
+            From: {form.name.data} <{form.email.data}>
+            {form.message.data}
+            '''
+            try:
+                mail.send(msg)
+                current_app.logger.info(f'Message sent from {form.email.data}')
+                flash('Your message has been sent. Thank you!', 'success')
+            except Exception as e:
+                current_app.logger.error(f'Failed to send message: {str(e)}')
+                flash('Failed to send your message. Please try again later.', 'danger')
+            return redirect(url_for('users.contact'))
+        else:
+            flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
     return render_template('contact.html', title='Contact', form=form)
 
 @users.route("/resend_verification", methods=['POST'])
