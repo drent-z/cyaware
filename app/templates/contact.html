@@ -8,7 +8,7 @@
         <div class="col-md-6">
             <h2 class="text-center mb-4">Contact Us</h2>
             <p class="text-center">If you have any questions, feel free to reach out to us!</p>
-            <form action="{{ url_for('users.contact') }}" method="POST" class="contact-form">
+            <form id="contact-form" action="{{ url_for('users.contact') }}" method="POST" class="contact-form">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {{ form.name.label(class="form-label") }}
@@ -23,7 +23,7 @@
                     {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
                 </div>
                 <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
-                <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+                <button type="submit" class="btn btn-primary btn-block mt-3" id="submit-button">Submit</button>
             </form>
         </div>
     </div>
@@ -34,6 +34,16 @@
 grecaptcha.ready(function() {
     grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
         document.getElementById('g-recaptcha-response').value = token;
+    });
+});
+
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
+            document.getElementById('g-recaptcha-response').value = token;
+            document.getElementById('contact-form').submit();
+        });
     });
 });
 </script>
