@@ -17,7 +17,9 @@ last_verification_request_time = {}
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
+    current_app.logger.info("Accessed register page")
     if current_user.is_authenticated:
+        current_app.logger.info(f"User {current_user.email} already authenticated, redirecting to main index")
         return redirect(url_for('main.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -33,7 +35,9 @@ def register():
 
 @users.route("/login", methods=['GET', 'POST'])
 def login():
+    current_app.logger.info("Accessed login page")
     if current_user.is_authenticated:
+        current_app.logger.info(f"User {current_user.email} already authenticated, redirecting to main index")
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
@@ -41,28 +45,34 @@ def login():
         if user:
             if not user.verified:
                 flash('Account not verified. Please check your email to verify your account.', 'warning')
+                current_app.logger.info(f"User {user.email} attempted to login but is not verified")
                 return render_template('login.html', title='Login', form=form, show_resend_button=True, email=form.email.data)
             if user.check_password(form.password.data):
                 login_user(user, remember=form.remember_me.data)
                 next_page = request.args.get('next')
+                current_app.logger.info(f"User {user.email} logged in successfully")
                 return redirect(next_page) if next_page else redirect(url_for('main.index'))
         flash('Login unsuccessful. Please check email and password', 'danger')
+        current_app.logger.info("Login attempt failed")
     return render_template('login.html', title='Login', form=form, show_resend_button=False)
 
 @users.route("/logout")
 def logout():
+    current_app.logger.info(f"User {current_user.email} logged out")
     logout_user()
     return redirect(url_for('main.index'))
 
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
+    current_app.logger.info(f"Accessed account page for user {current_user.email}")
     form = UpdateAccountForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
+        current_app.logger.info(f"Account updated for user {current_user.email}")
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
@@ -71,23 +81,29 @@ def account():
 
 @users.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
+    current_app.logger.info("Accessed password reset request page")
     if current_user.is_authenticated:
+        current_app.logger.info(f"User {current_user.email} already authenticated, redirecting to main index")
         return redirect(url_for('main.index'))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password.', 'info')
+        current_app.logger.info(f"Password reset email sent to {user.email}")
         return redirect(url_for('users.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
+    current_app.logger.info(f"Accessed password reset page with token {token}")
     if current_user.is_authenticated:
+        current_app.logger.info(f"User {current_user.email} already authenticated, redirecting to main index")
         return redirect(url_for('main.index'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
+        current_app.logger.warning("Invalid or expired password reset token")
         return redirect(url_for('users.reset_request'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -95,6 +111,7 @@ def reset_token(token):
         user.password = hashed_password
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
+        current_app.logger.info(f"Password updated for user {user.email}")
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form, token=token)
 
@@ -122,13 +139,16 @@ def validate_email():
 
 @users.route("/verify/<token>")
 def verify_token(token):
+    current_app.logger.info(f"Accessed account verification page with token {token}")
     user = User.verify_verification_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
+        current_app.logger.warning("Invalid or expired verification token")
         return redirect(url_for('users.register'))
     user.verified = True
     db.session.commit()
     flash('Your account has been verified! You can now log in', 'success')
+    current_app.logger.info(f"Account verified for user {user.email}")
     return redirect(url_for('users.login'))
 
 @users.route("/contact", methods=['GET', 'POST'])
@@ -140,18 +160,32 @@ def contact():
         project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
         recaptcha_action = 'contact'
 
-        recaptcha_response = requests.post(
-            f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={current_app.config["RECAPTCHA_SECRET_KEY"]}',
-            json={
-                'event': {
-                    'token': recaptcha_token,
-                    'siteKey': recaptcha_site_key,
-                    'expectedAction': recaptcha_action
-                }
+        # Log form submission and reCAPTCHA token generation
+        current_app.logger.info(f"Form submitted with reCAPTCHA token: {recaptcha_token}")
+
+        # Create the request body
+        request_body = {
+            "event": {
+                "token": recaptcha_token,
+                "expectedAction": recaptcha_action,
+                "siteKey": recaptcha_site_key,
             }
-        )
+        }
+
+        # Send the request to reCAPTCHA Enterprise API
+        try:
+            recaptcha_response = requests.post(
+                f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={current_app.config["RECAPTCHA_SECRET_KEY"]}',
+                json=request_body
+            )
+            recaptcha_response.raise_for_status()  # Raise HTTPError for bad responses
+        except requests.exceptions.RequestException as e:
+            current_app.logger.error(f"Error sending reCAPTCHA verification request: {e}")
+            flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
+            return redirect(url_for('users.contact'))
 
         recaptcha_result = recaptcha_response.json()
+        current_app.logger.info(f"reCAPTCHA response: {recaptcha_result}")
 
         if recaptcha_result.get('tokenProperties', {}).get('valid'):
             msg = Message(
@@ -172,6 +206,8 @@ def contact():
                 flash('Failed to send your message. Please try again later.', 'danger')
             return redirect(url_for('users.contact'))
         else:
+            invalid_reason = recaptcha_result.get('tokenProperties', {}).get('invalidReason')
+            current_app.logger.error(f"reCAPTCHA token validation failed: {invalid_reason}")
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
     return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
 
