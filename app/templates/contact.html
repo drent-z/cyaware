@@ -22,8 +22,8 @@
                     {{ form.message.label(class="form-label") }}
                     {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
                 <input type="hidden" id="recaptcha-token" name="recaptcha_token">
+                <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
             </form>
         </div>
     </div>
@@ -34,16 +34,6 @@
     grecaptcha.ready(function() {
         grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
             document.getElementById('recaptcha-token').value = token;
-        });
-    });
-
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        grecaptcha.ready(function() {
-            grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
-                document.getElementById('recaptcha-token').value = token;
-                document.getElementById('contact-form').submit();
-            });
         });
     });
 </script>
