@@ -9,11 +9,67 @@ from flask_mail import Message
 import logging
 import time
 import requests
+from google.cloud import recaptchaenterprise_v1
 
 users = Blueprint('users', __name__)
 
 # Dictionary to store last verification email request time for each user
 last_verification_request_time = {}
+
+def create_assessment(project_id: str, recaptcha_key: str, token: str, recaptcha_action: str):
+    """Create an assessment to analyze the risk of a UI action.
+    Args:
+        project_id: Your Google Cloud Project ID.
+        recaptcha_key: The reCAPTCHA key associated with the site/app
+        token: The generated token obtained from the client.
+        recaptcha_action: Action name corresponding to the token.
+    """
+
+    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+    # Set the properties of the event to be tracked.
+    event = recaptchaenterprise_v1.Event()
+    event.site_key = recaptcha_key
+    event.token = token
+
+    assessment = recaptchaenterprise_v1.Assessment()
+    assessment.event = event
+
+    project_name = f"projects/{project_id}"
+
+    # Build the assessment request.
+    request = recaptchaenterprise_v1.CreateAssessmentRequest()
+    request.assessment = assessment
+    request.parent = project_name
+
+    response = client.create_assessment(request)
+
+    # Check if the token is valid.
+    if not response.token_properties.valid:
+        current_app.logger.error(
+            "The CreateAssessment call failed because the token was invalid for the following reasons: "
+            + str(response.token_properties.invalid_reason)
+        )
+        return None
+
+    # Check if the expected action was executed.
+    if response.token_properties.action != recaptcha_action:
+        current_app.logger.error(
+            "The action attribute in your reCAPTCHA tag does not match the action you are expecting to score"
+        )
+        return None
+    else:
+        # Get the risk score and the reason(s).
+        for reason in response.risk_analysis.reasons:
+            current_app.logger.info(reason)
+        current_app.logger.info(
+            "The reCAPTCHA score for this token is: "
+            + str(response.risk_analysis.score)
+        )
+        # Get the assessment name (id). Use this to annotate the assessment.
+        assessment_name = client.parse_assessment_path(response.name).get("assessment")
+        current_app.logger.info(f"Assessment name: {assessment_name}")
+    return response
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
@@ -137,19 +193,12 @@ def contact():
     recaptcha_site_key = current_app.config['RECAPTCHA_SITE_KEY']
     if form.validate_on_submit():
         recaptcha_token = request.form.get('recaptcha_token')
-        recaptcha_response = requests.post(
-            'https://recaptchaenterprise.googleapis.com/v1/projects/cyaware-1720234770496/assessments?key=' + current_app.config['RECAPTCHA_SECRET_KEY'],
-            json={
-                'event': {
-                    'token': recaptcha_token,
-                    'siteKey': current_app.config['RECAPTCHA_SITE_KEY'],
-                    'expectedAction': 'contact'
-                }
-            }
-        )
-        recaptcha_result = recaptcha_response.json()
+        project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
+        recaptcha_action = 'contact'
 
-        if recaptcha_result['tokenProperties']['valid']:
+        assessment_response = create_assessment(project_id, recaptcha_site_key, recaptcha_token, recaptcha_action)
+
+        if assessment_response and assessment_response.token_properties.valid:
             msg = Message(
                 'Contact Form Submission',
                 sender=form.email.data,

@@ -18,6 +18,7 @@ class Config:
     MAILGUN_SMTP_LOGIN = os.getenv('MAILGUN_SMTP_LOGIN')
     RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
     RECAPTCHA_SECRET_KEY = os.environ.get('RECAPTCHA_SECRET_KEY')
+    GOOGLE_CLOUD_PROJECT_ID = os.environ.get('GOOGLE_CLOUD_PROJECT_ID')
 
 logging.debug(f'MAILGUN_SMTP_LOGIN: {Config.MAILGUN_SMTP_LOGIN}')
 logging.debug(f'MAILGUN_API_KEY: {Config.MAILGUN_API_KEY}')
