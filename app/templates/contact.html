@@ -22,7 +22,7 @@
                     {{ form.message.label(class="form-label") }}
                     {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
                 </div>
-                <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-action="contact"></div>
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark" data-size="invisible" data-callback="onSubmit"></div>
                 <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
             </form>
         </div>
@@ -31,6 +31,10 @@
 
 <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
 <script>
+function onSubmit(token) {
+    document.getElementById("contact-form").submit();
+}
+
 document.getElementById('contact-form').addEventListener('submit', function(event) {
     event.preventDefault();
     grecaptcha.enterprise.ready(function() {
@@ -40,7 +44,7 @@ document.getElementById('contact-form').addEventListener('submit', function(even
             recaptchaResponse.setAttribute('name', 'recaptcha_token');
             recaptchaResponse.setAttribute('value', token);
             document.getElementById('contact-form').appendChild(recaptchaResponse);
-            document.getElementById('contact-form').submit();
+            onSubmit(token);
         });
     });
 });
