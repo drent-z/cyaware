@@ -141,7 +141,7 @@ def contact():
         recaptcha_action = 'contact'
 
         recaptcha_response = requests.post(
-            'https://recaptchaenterprise.googleapis.com/v1/projects/' + project_id + '/assessments?key=' + current_app.config['RECAPTCHA_SECRET_KEY'],
+            f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={current_app.config["RECAPTCHA_SECRET_KEY"]}',
             json={
                 'event': {
                     'token': recaptcha_token,
