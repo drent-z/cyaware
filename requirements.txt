@@ -14,5 +14,5 @@ email-validator
 requests
 psycopg2-binary
 SQLAlchemy
-google-cloud-recaptchaenterprise
+google-cloud-recaptcha-enterprise
 
