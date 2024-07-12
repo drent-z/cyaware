@@ -1,19 +1,3 @@
-/* CSS Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Ensure full height and no margin/padding */
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    min-height: 100%;
-    overflow: hidden;
-}
-
 :root {
     --navbar-bg: #1a1a1a;
     --navbar-color: #00ff00;
@@ -37,6 +21,9 @@ body {
     font-family: 'Roboto Mono', monospace;
     background-color: var(--body-bg);
     color: var(--body-color);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 header {
@@ -249,8 +236,8 @@ footer {
     40% {
         clip: rect(44px, 9999px, 36px, 0);
         transform: skew(0.3deg);
-    }    
-	45% {
+    }
+    45% {
         clip: rect(10px, 9999px, 70px, 0);
         transform: skew(0.3deg);
     }
@@ -273,8 +260,8 @@ footer {
     70% {
         clip: rect(44px, 9999px, 56px, 0);
         transform: skew(0.3deg);
-    }
-    75% {
+    }    
+	75% {
         clip: rect(25px, 9999px, 56px, 0);
         transform: skew(0.3deg);
     }
@@ -311,17 +298,8 @@ footer {
     color: var(--input-placeholder);
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-wrapper {
-    box-shadow: none;
-    border: none;
-}
-
 /* Mobile Styles */
-@media (max-width: 992px) {
+@media (max-width: 992px) { /* Adjust breakpoint to ensure no intermediate view */
     .navbar-toggler {
         display: block;
     }
@@ -369,8 +347,8 @@ footer {
 
     .feature-box {
         width: 90%;
-        min-width: 250px;
-        max-width: 100%;
+        min-width: 250px; /* Ensure minimum width */
+        max-width: 100%; /* Ensure it fits the screen */
         margin: 1rem 0;
     }
 
@@ -382,7 +360,6 @@ footer {
         padding: 1rem 0;
     }
 }
-
 /* Dark mode input field styles */
 input.form-control {
     background-color: #333;
@@ -396,6 +373,7 @@ input.form-control:focus {
     border-color: #00ff00;
 }
 
+/* Apply similar styles for other form elements */
 textarea.form-control, select.form-control {
     background-color: #333;
     color: #fff;
@@ -406,4 +384,12 @@ textarea.form-control:focus, select.form-control:focus {
     background-color: #444;
     color: #fff;
     border-color: #00ff00;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+.form-wrapper {
+    box-shadow: none;
+    border: none;
 }
