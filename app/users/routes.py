@@ -9,6 +9,7 @@ from flask_mail import Message
 import logging
 import time
 import requests
+import os  # Ensure os is imported
 
 users = Blueprint('users', __name__)
 

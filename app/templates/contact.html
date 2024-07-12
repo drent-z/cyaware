@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render={{ recaptcha_site_key }}" async defer></script>
 </head>
 <body>
     <div class="container mt-5">
@@ -26,7 +26,7 @@
                         {{ form.message.label(class="form-label") }}
                         {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
                     </div>
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-action="contact"></div>
+                    <input type="hidden" id="recaptchaToken" name="recaptcha_token">
                     <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
                 </form>
             </div>
@@ -41,11 +41,7 @@
             if (typeof grecaptcha !== 'undefined') {
                 grecaptcha.enterprise.ready(function() {
                     grecaptcha.enterprise.execute('{{ recaptcha_site_key }}', { action: 'contact' }).then(function(token) {
-                        const recaptchaResponse = document.createElement('input');
-                        recaptchaResponse.setAttribute('type', 'hidden');
-                        recaptchaResponse.setAttribute('name', 'recaptcha_token');
-                        recaptchaResponse.setAttribute('value', token);
-                        form.appendChild(recaptchaResponse);
+                        document.getElementById('recaptchaToken').value = token;
                         form.submit();
                     });
                 });
