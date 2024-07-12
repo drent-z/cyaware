@@ -9,7 +9,6 @@ from flask_mail import Message
 import logging
 import time
 import requests
-import os
 
 users = Blueprint('users', __name__)
 
@@ -155,43 +154,25 @@ def verify_token(token):
 @users.route("/contact", methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
-    recaptcha_site_key = os.getenv('RECAPTCHA_SITE_KEY')
-    recaptcha_secret_key = os.getenv('RECAPTCHA_SECRET_KEY')
-    
     if form.validate_on_submit():
-        recaptcha_token = request.form.get('g-recaptcha-response')
-        recaptcha_response = requests.post(
-            'https://www.google.com/recaptcha/api/siteverify',
-            data = {
-                'secret': recaptcha_secret_key,
-                'response': recaptcha_token
-            }
+        msg = Message(
+            'Contact Form Submission',
+            sender=form.email.data,
+            recipients=[current_app.config['MAIL_USERNAME']]
         )
-        result = recaptcha_response.json()
-        
-        if result.get('success'):
-            msg = Message(
-                'Contact Form Submission',
-                sender=form.email.data,
-                recipients=[current_app.config['MAIL_USERNAME']]
-            )
-            msg.body = f'''
-            From: {form.name.data} <{form.email.data}>
-            {form.message.data}
-            '''
-            try:
-                mail.send(msg)
-                current_app.logger.info(f'Message sent from {form.email.data}')
-                flash('Your message has been sent. Thank you!', 'success')
-            except Exception as e:
-                current_app.logger.error(f'Failed to send message: {str(e)}')
-                flash('Failed to send your message. Please try again later.', 'danger')
-            return redirect(url_for('users.contact'))
-        else:
-            current_app.logger.error(f"reCAPTCHA validation failed: {result.get('error-codes')}")
-            flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
-
-    return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
+        msg.body = f'''
+        From: {form.name.data} <{form.email.data}>
+        {form.message.data}
+        '''
+        try:
+            mail.send(msg)
+            current_app.logger.info(f'Message sent from {form.email.data}')
+            flash('Your message has been sent. Thank you!', 'success')
+        except Exception as e:
+            current_app.logger.error(f'Failed to send message: {str(e)}')
+            flash('Failed to send your message. Please try again later.', 'danger')
+        return redirect(url_for('users.contact'))
+    return render_template('contact.html', title='Contact', form=form)
 
 @users.route("/resend_verification", methods=['POST'])
 def resend_verification():
