@@ -134,6 +134,7 @@ header {
     justify-content: space-around;
     padding: 2rem;
     background-color: #121212;
+	border-radius: 15px;
 }
 
 .feature-box {
