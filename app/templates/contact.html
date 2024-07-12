@@ -36,11 +36,6 @@
             'theme': 'dark'
         });
     }
-
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        grecaptcha.execute();
-    });
 </script>
 <script src="https://www.google.com/recaptcha/api.js?onload=recaptchaOnloadCallback&render=explicit" async defer></script>
 {% endblock %}
