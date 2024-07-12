@@ -157,12 +157,11 @@ def contact():
     form = ContactForm()
     recaptcha_site_key = os.getenv('RECAPTCHA_SITE_KEY')
     recaptcha_secret_key = os.getenv('RECAPTCHA_SECRET_KEY')
-    
     if form.validate_on_submit():
         recaptcha_token = request.form.get('g-recaptcha-response')
         project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
         recaptcha_action = 'contact'
-        
+
         # Log form submission and reCAPTCHA token generation
         current_app.logger.info(f"Form submitted with reCAPTCHA token: {recaptcha_token}")
 
@@ -181,7 +180,7 @@ def contact():
                 f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={recaptcha_secret_key}',
                 json=request_body
             )
-            recaptcha_response.raise_for_status()
+            recaptcha_response.raise_for_status()  # Raise HTTPError for bad responses
             current_app.logger.info("reCAPTCHA verification request sent successfully")
         except requests.exceptions.RequestException as e:
             current_app.logger.error(f"Error sending reCAPTCHA verification request: {e}")
@@ -214,7 +213,7 @@ def contact():
             current_app.logger.error(f"reCAPTCHA token validation failed: {invalid_reason}")
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
     return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
-        
+            
 @users.route("/resend_verification", methods=['POST'])
 def resend_verification():
     email = request.json.get('email')
