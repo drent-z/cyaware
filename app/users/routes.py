@@ -184,7 +184,7 @@ def contact():
                 json=request_body
             )
             recaptcha_response.raise_for_status()  # Raise HTTPError for bad responses
-            current_app.logger.info(f"reCAPTCHA verification request sent successfully")
+            current_app.logger.info("reCAPTCHA verification request sent successfully")
         except requests.exceptions.RequestException as e:
             current_app.logger.error(f"Error sending reCAPTCHA verification request: {e}")
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
