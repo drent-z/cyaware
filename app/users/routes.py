@@ -150,7 +150,7 @@ def verify_token(token):
     db.session.commit()
     flash('Your account has been verified! You can now log in', 'success')
     current_app.logger.info(f"Account verified for user {user.email}")
-    return redirect(url_for('users.login')
+    return redirect(url_for('users.login'))
 
 @users.route("/contact", methods=['GET', 'POST'])
 def contact():
