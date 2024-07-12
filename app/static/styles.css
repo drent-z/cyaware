@@ -1,14 +1,17 @@
-/* Global Styles */
+/* CSS Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Reset margin and padding for all elements */
+/* Ensure full height and no margin/padding */
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
 }
 
 :root {
@@ -34,9 +37,6 @@ body {
     font-family: 'Roboto Mono', monospace;
     background-color: var(--body-bg);
     color: var(--body-color);
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 header {
@@ -228,8 +228,9 @@ footer {
     }
     15% {
         clip: rect(15px, 9999px, 46px, 0);
-        transform: skew(0.3deg);    
-	20% {
+        transform: skew(0.3deg);
+    }
+    20% {
         clip: rect(44px, 9999px, 56px, 0);
         transform: skew(0.3deg);
     }
@@ -248,8 +249,8 @@ footer {
     40% {
         clip: rect(44px, 9999px, 36px, 0);
         transform: skew(0.3deg);
-    }
-    45% {
+    }    
+	45% {
         clip: rect(10px, 9999px, 70px, 0);
         transform: skew(0.3deg);
     }
@@ -406,4 +407,3 @@ textarea.form-control:focus, select.form-control:focus {
     color: #fff;
     border-color: #00ff00;
 }
-  
