@@ -232,7 +232,7 @@ def contact():
             current_app.logger.error(f"reCAPTCHA token validation failed: {invalid_reason}")
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
     return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
-
+    
 @users.route("/resend_verification", methods=['POST'])
 def resend_verification():
     email = request.json.get('email')
