@@ -163,6 +163,11 @@ def contact():
         # Log form submission and reCAPTCHA token generation
         current_app.logger.info(f"Form submitted with reCAPTCHA token: {recaptcha_token}")
 
+        if not recaptcha_token:
+            current_app.logger.error("No reCAPTCHA token found in form submission")
+            flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
+            return redirect(url_for('users.contact'))
+
         # Create the request body
         request_body = {
             "event": {
