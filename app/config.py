@@ -16,8 +16,6 @@ class Config:
     MAILGUN_DOMAIN = os.getenv('MAILGUN_DOMAIN')
     MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY')
     MAILGUN_SMTP_LOGIN = os.getenv('MAILGUN_SMTP_LOGIN')
-    PAPERTRAIL_HOST = os.getenv('PAPERTRAIL_HOST')
-    PAPERTRAIL_PORT = int(os.getenv('PAPERTRAIL_PORT'))
 
 logging.debug(f'MAILGUN_SMTP_LOGIN: {Config.MAILGUN_SMTP_LOGIN}')
 logging.debug(f'MAILGUN_API_KEY: {Config.MAILGUN_API_KEY}')
