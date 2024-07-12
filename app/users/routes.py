@@ -154,7 +154,8 @@ def verify_token(token):
 @users.route("/contact", methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
-    recaptcha_site_key = current_app.config['RECAPTCHA_SITE_KEY']
+    recaptcha_site_key = os.getenv('RECAPTCHA_SITE_KEY')
+    recaptcha_secret_key = os.getenv('RECAPTCHA_SECRET_KEY')
     if form.validate_on_submit():
         recaptcha_token = request.form.get('recaptcha_token')
         project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
@@ -175,7 +176,7 @@ def contact():
         # Send the request to reCAPTCHA Enterprise API
         try:
             recaptcha_response = requests.post(
-                f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={current_app.config["RECAPTCHA_SECRET_KEY"]}',
+                f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={recaptcha_secret_key}',
                 json=request_body
             )
             recaptcha_response.raise_for_status()  # Raise HTTPError for bad responses
