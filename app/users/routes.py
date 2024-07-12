@@ -194,7 +194,6 @@ def contact():
             error_codes = recaptcha_result.get('error-codes', [])
             current_app.logger.error(f"reCAPTCHA verification failed: {error_codes}")
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
-
     return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
 
 @users.route("/resend_verification", methods=['POST'])
