@@ -1,41 +1,47 @@
-{% extends "layout.html" %}
-
-{% block title %}Contact{% endblock %}
-
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2 class="text-center mb-4">Contact Us</h2>
-            <p class="text-center">If you have any questions, feel free to reach out to us!</p>
-            <form id="contact-form" action="{{ url_for('users.contact') }}" method="POST" class="contact-form">
-                {{ form.hidden_tag() }}
-                <div class="form-group">
-                    {{ form.name.label(class="form-label") }}
-                    {{ form.name(class="form-control bg-dark text-white", placeholder="Enter your name") }}
-                </div>
-                <div class="form-group">
-                    {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
-                </div>
-                <div class="form-group">
-                    {{ form.message.label(class="form-label") }}
-                    {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
-                </div>
-                <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
-                <div id="g-recaptcha" class="d-flex justify-content-center mt-3"></div>
-            </form>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <style>
+        .g-recaptcha {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <form id="contact-form" method="POST" action="{{ url_for('users.contact') }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name.label(class="form-control-label") }}
+                {{ form.name(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {{ form.email(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.message.label(class="form-control-label") }}
+                {{ form.message(class="form-control") }}
+            </div>
+            <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark"></div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
-</div>
 
-<script>
-    var onloadCallback = function() {
-        grecaptcha.render('g-recaptcha', {
-            'sitekey' : '{{ recaptcha_site_key }}',
-            'theme' : 'dark'
-        });
-    };
-</script>
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-{% endblock %}
+    <script>
+        var onloadCallback = function() {
+            grecaptcha.render('recaptcha', {
+                'sitekey' : '{{ recaptcha_site_key }}'
+            });
+        };
+    </script>
+</body>
+</html>
