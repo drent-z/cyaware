@@ -174,7 +174,8 @@ footer {
     background-color: #000;
     color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    box-shadow: none; /* Remove box shadow */
+    border: none; /* Remove border */
 }
 
 .glitch {
@@ -370,6 +371,7 @@ footer {
         padding: 1rem 0;
     }
 }
+
 /* Dark mode input field styles */
 input.form-control {
     background-color: #333;
@@ -399,6 +401,7 @@ textarea.form-control:focus, select.form-control:focus {
 .form-group {
     margin-bottom: 1.5rem;
 }
+
 .form-wrapper {
     box-shadow: none;
     border: none;
