@@ -28,24 +28,32 @@
     </div>
 </div>
 
-<script src="https://www.google.com/recaptcha/enterprise.js?render={{ recaptcha_site_key }}" async defer></script>
+<script src="https://www.google.com/recaptcha/enterprise.js?render={{ recaptcha_site_key }}" async defer onload="console.log('reCAPTCHA script loaded')"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
     document.getElementById('contact-form').addEventListener('submit', function(event) {
         event.preventDefault();
-        grecaptcha.enterprise.ready(function() {
-            grecaptcha.enterprise.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
-                var recaptchaResponse = document.createElement('input');
-                recaptchaResponse.setAttribute('type', 'hidden');
-                recaptchaResponse.setAttribute('name', 'recaptcha_token');
-                recaptchaResponse.setAttribute('value', token);
-                document.getElementById('contact-form').appendChild(recaptchaResponse);
-                console.log('reCAPTCHA token generated:', token);  // Log the token
-                document.getElementById('contact-form').submit();
-            }).catch(function(error) {
-                console.error('Error generating reCAPTCHA token:', error);  // Log any error
+        console.log('Form submit event triggered');
+        if (typeof grecaptcha !== 'undefined') {
+            console.log('grecaptcha is defined');
+            grecaptcha.enterprise.ready(function() {
+                console.log('grecaptcha.enterprise is ready');
+                grecaptcha.enterprise.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
+                    console.log('reCAPTCHA token generated:', token);
+                    var recaptchaResponse = document.createElement('input');
+                    recaptchaResponse.setAttribute('type', 'hidden');
+                    recaptchaResponse.setAttribute('name', 'recaptcha_token');
+                    recaptchaResponse.setAttribute('value', token);
+                    document.getElementById('contact-form').appendChild(recaptchaResponse);
+                    document.getElementById('contact-form').submit();
+                }).catch(function(error) {
+                    console.error('Error generating reCAPTCHA token:', error);
+                });
             });
-        });
+        } else {
+            console.error('grecaptcha is not defined');
+        }
     });
 });
 </script>
