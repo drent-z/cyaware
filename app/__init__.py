@@ -61,12 +61,11 @@ def create_app(config_class=os.getenv('FLASK_CONFIG_CLASS', 'app.config.Config')
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
 
-    # Papertrail logging
-    papertrail_host = os.getenv('PAPERTRAIL_HOST', 'logs3.papertrailapp.com')
-    papertrail_port = int(os.getenv('PAPERTRAIL_PORT', 12345))
-    papertrail_handler = SysLogHandler(address=(papertrail_host, papertrail_port))
-    papertrail_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-    app.logger.addHandler(papertrail_handler)
+    # StreamHandler for Heroku logs
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    stream_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    app.logger.addHandler(stream_handler)
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('CyAware startup')
