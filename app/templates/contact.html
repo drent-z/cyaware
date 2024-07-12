@@ -28,21 +28,25 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
                     <input type="hidden" id="recaptcha-token" name="recaptcha_token">
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark"></div>
+                    <div class="g-recaptcha mt-3" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark" style="display: flex; justify-content: center;"></div>
                 </form>
             </div>
         </div>
     </div>
 
     <script>
-        function onSubmit(e) {
-            e.preventDefault();
-            grecaptcha.enterprise.ready(function() {
-                grecaptcha.enterprise.execute('{{ recaptcha_site_key }}', {action: 'submit'}).then(function(token) {
-                    document.getElementById('recaptcha-token').value = token;
-                    document.getElementById('contact-form').submit();
+        function onSubmit(event) {
+            event.preventDefault();
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.enterprise.ready(function() {
+                    grecaptcha.enterprise.execute('{{ recaptcha_site_key }}', { action: 'contact' }).then(function(token) {
+                        document.getElementById('recaptcha-token').value = token;
+                        document.getElementById('contact-form').submit();
+                    });
                 });
-            });
+            } else {
+                console.error('grecaptcha is not defined');
+            }
         }
     </script>
 </body>
