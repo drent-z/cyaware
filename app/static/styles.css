@@ -1,13 +1,16 @@
+/* Global Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
+/* Reset margin and padding for all elements */
+html, body {
     margin: 0;
     padding: 0;
 }
+
 :root {
     --navbar-bg: #1a1a1a;
     --navbar-color: #00ff00;
@@ -174,8 +177,7 @@ footer {
     background-color: #000;
     color: #fff;
     border-radius: 10px;
-    box-shadow: none; /* Remove box shadow */
-    border: none; /* Remove border */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .glitch {
@@ -226,9 +228,8 @@ footer {
     }
     15% {
         clip: rect(15px, 9999px, 46px, 0);
-        transform: skew(0.3deg);
-    }
-    20% {
+        transform: skew(0.3deg);    
+	20% {
         clip: rect(44px, 9999px, 56px, 0);
         transform: skew(0.3deg);
     }
@@ -309,8 +310,17 @@ footer {
     color: var(--input-placeholder);
 }
 
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-wrapper {
+    box-shadow: none;
+    border: none;
+}
+
 /* Mobile Styles */
-@media (max-width: 992px) { /* Adjust breakpoint to ensure no intermediate view */
+@media (max-width: 992px) {
     .navbar-toggler {
         display: block;
     }
@@ -358,8 +368,8 @@ footer {
 
     .feature-box {
         width: 90%;
-        min-width: 250px; /* Ensure minimum width */
-        max-width: 100%; /* Ensure it fits the screen */
+        min-width: 250px;
+        max-width: 100%;
         margin: 1rem 0;
     }
 
@@ -385,7 +395,6 @@ input.form-control:focus {
     border-color: #00ff00;
 }
 
-/* Apply similar styles for other form elements */
 textarea.form-control, select.form-control {
     background-color: #333;
     color: #fff;
@@ -397,12 +406,4 @@ textarea.form-control:focus, select.form-control:focus {
     color: #fff;
     border-color: #00ff00;
 }
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-wrapper {
-    box-shadow: none;
-    border: none;
-}
+  
