@@ -30,12 +30,12 @@
 </div>
 
 <script>
-    function recaptchaOnloadCallback() {
+    var onloadCallback = function() {
         grecaptcha.render('g-recaptcha', {
-            'sitekey': '{{ recaptcha_site_key }}',
-            'theme': 'dark'
+            'sitekey' : '{{ recaptcha_site_key }}',
+            'theme' : 'dark'
         });
-    }
+    };
 </script>
-<script src="https://www.google.com/recaptcha/api.js?onload=recaptchaOnloadCallback&render=explicit" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 {% endblock %}
