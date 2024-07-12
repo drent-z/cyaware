@@ -9,7 +9,7 @@ from flask_mail import Message
 import logging
 import time
 import requests
-import os  # Ensure os is imported
+import os
 
 users = Blueprint('users', __name__)
 
@@ -150,7 +150,7 @@ def verify_token(token):
     db.session.commit()
     flash('Your account has been verified! You can now log in', 'success')
     current_app.logger.info(f"Account verified for user {user.email}")
-    return redirect(url_for('users.login'))
+    return redirect(url_for('users.login')
 
 @users.route("/contact", methods=['GET', 'POST'])
 def contact():
@@ -158,39 +158,21 @@ def contact():
     recaptcha_site_key = os.getenv('RECAPTCHA_SITE_KEY')
     recaptcha_secret_key = os.getenv('RECAPTCHA_SECRET_KEY')
     if form.validate_on_submit():
-        recaptcha_token = request.form.get('recaptcha_token')
-        project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
-        recaptcha_action = 'contact'
-
-        # Log form submission and reCAPTCHA token generation
+        recaptcha_token = request.form.get('g-recaptcha-response')
         current_app.logger.info(f"Form submitted with reCAPTCHA token: {recaptcha_token}")
 
-        # Create the request body
-        request_body = {
-            "event": {
-                "token": recaptcha_token,
-                "expectedAction": recaptcha_action,
-                "siteKey": recaptcha_site_key,
-            }
+        # Verify reCAPTCHA token with Google API
+        recaptcha_verification_url = 'https://www.google.com/recaptcha/api/siteverify'
+        recaptcha_payload = {
+            'secret': recaptcha_secret_key,
+            'response': recaptcha_token
         }
-
-        # Send the request to reCAPTCHA Enterprise API
-        try:
-            recaptcha_response = requests.post(
-                f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={recaptcha_secret_key}',
-                json=request_body
-            )
-            recaptcha_response.raise_for_status()  # Raise HTTPError for bad responses
-            current_app.logger.info("reCAPTCHA verification request sent successfully")
-        except requests.exceptions.RequestException as e:
-            current_app.logger.error(f"Error sending reCAPTCHA verification request: {e}")
-            flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
-            return redirect(url_for('users.contact'))
-
+        recaptcha_response = requests.post(recaptcha_verification_url, data=recaptcha_payload)
         recaptcha_result = recaptcha_response.json()
+
         current_app.logger.info(f"reCAPTCHA response: {recaptcha_result}")
 
-        if recaptcha_result.get('tokenProperties', {}).get('valid'):
+        if recaptcha_result.get('success'):
             msg = Message(
                 'Contact Form Submission',
                 sender=form.email.data,
@@ -209,9 +191,10 @@ def contact():
                 flash('Failed to send your message. Please try again later.', 'danger')
             return redirect(url_for('users.contact'))
         else:
-            invalid_reason = recaptcha_result.get('tokenProperties', {}).get('invalidReason')
-            current_app.logger.error(f"reCAPTCHA token validation failed: {invalid_reason}")
+            error_codes = recaptcha_result.get('error-codes', [])
+            current_app.logger.error(f"reCAPTCHA verification failed: {error_codes}")
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
+
     return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
 
 @users.route("/resend_verification", methods=['POST'])
