@@ -23,13 +23,26 @@
                     {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
                 </div>
                 <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
-                <div class="text-center mt-3">
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
-                </div>
+                <div class="g-recaptcha mt-3" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark"></div>
             </form>
         </div>
     </div>
 </div>
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
+            var recaptchaResponse = document.createElement('input');
+            recaptchaResponse.setAttribute('type', 'hidden');
+            recaptchaResponse.setAttribute('name', 'recaptcha_token');
+            recaptchaResponse.setAttribute('value', token);
+            document.getElementById('contact-form').appendChild(recaptchaResponse);
+            document.getElementById('contact-form').submit();
+        });
+    });
+});
+</script>
 {% endblock %}
