@@ -5,8 +5,6 @@ from app.models import User
 from app.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                              RequestResetForm, ResetPasswordForm, ContactForm)
 from app.users.utils import save_picture, send_reset_email, send_verification_email
-from google.cloud import recaptchaenterprise_v1
-from google.cloud.recaptchaenterprise_v1 import Assessment
 from flask_mail import Message
 import logging
 import time
@@ -159,57 +157,40 @@ def contact():
     form = ContactForm()
     recaptcha_site_key = os.getenv('RECAPTCHA_SITE_KEY')
     recaptcha_secret_key = os.getenv('RECAPTCHA_SECRET_KEY')
-    project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
-
     if form.validate_on_submit():
         recaptcha_token = request.form.get('recaptcha_token')
-        recaptcha_action = 'contact'
+        project_id = current_app.config['GOOGLE_CLOUD_PROJECT_ID']
+        recaptcha_action = 'submit'
 
         # Log form submission and reCAPTCHA token generation
         current_app.logger.info(f"Form submitted with reCAPTCHA token: {recaptcha_token}")
 
-        # Function to create assessment and verify reCAPTCHA token
-        def create_assessment(project_id, recaptcha_key, token, recaptcha_action):
-            client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+        # Create the request body
+        request_body = {
+            "event": {
+                "token": recaptcha_token,
+                "expectedAction": recaptcha_action,
+                "siteKey": recaptcha_site_key,
+            }
+        }
 
-            event = recaptchaenterprise_v1.Event()
-            event.site_key = recaptcha_key
-            event.token = token
+        # Send the request to reCAPTCHA Enterprise API
+        try:
+            recaptcha_response = requests.post(
+                f'https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments?key={recaptcha_secret_key}',
+                json=request_body
+            )
+            recaptcha_response.raise_for_status()  # Raise HTTPError for bad responses
+            current_app.logger.info("reCAPTCHA verification request sent successfully")
+        except requests.exceptions.RequestException as e:
+            current_app.logger.error(f"Error sending reCAPTCHA verification request: {e}")
+            flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
+            return redirect(url_for('users.contact'))
 
-            assessment = recaptchaenterprise_v1.Assessment()
-            assessment.event = event
+        recaptcha_result = recaptcha_response.json()
+        current_app.logger.info(f"reCAPTCHA response: {recaptcha_result}")
 
-            project_name = f"projects/{project_id}"
-            request = recaptchaenterprise_v1.CreateAssessmentRequest()
-            request.assessment = assessment
-            request.parent = project_name
-
-            response = client.create_assessment(request)
-
-            if not response.token_properties.valid:
-                current_app.logger.error(
-                    f"The CreateAssessment call failed because the token was invalid for the following reasons: {response.token_properties.invalid_reason}"
-                )
-                return None
-
-            if response.token_properties.action != recaptcha_action:
-                current_app.logger.error(
-                    "The action attribute in your reCAPTCHA tag does not match the action you are expecting to score"
-                )
-                return None
-            else:
-                for reason in response.risk_analysis.reasons:
-                    current_app.logger.info(reason)
-                current_app.logger.info(
-                    f"The reCAPTCHA score for this token is: {response.risk_analysis.score}"
-                )
-                assessment_name = client.parse_assessment_path(response.name).get("assessment")
-                current_app.logger.info(f"Assessment name: {assessment_name}")
-            return response
-
-        # Verify reCAPTCHA token
-        assessment_response = create_assessment(project_id, recaptcha_site_key, recaptcha_token, recaptcha_action)
-        if assessment_response and assessment_response.token_properties.valid:
+        if recaptcha_result.get('tokenProperties', {}).get('valid'):
             msg = Message(
                 'Contact Form Submission',
                 sender=form.email.data,
@@ -228,11 +209,11 @@ def contact():
                 flash('Failed to send your message. Please try again later.', 'danger')
             return redirect(url_for('users.contact'))
         else:
-            invalid_reason = assessment_response.token_properties.invalid_reason if assessment_response else "Unknown"
+            invalid_reason = recaptcha_result.get('tokenProperties', {}).get('invalidReason')
             current_app.logger.error(f"reCAPTCHA token validation failed: {invalid_reason}")
             flash('Failed to verify reCAPTCHA. Please try again.', 'danger')
     return render_template('contact.html', title='Contact', form=form, recaptcha_site_key=recaptcha_site_key)
-    
+        
 @users.route("/resend_verification", methods=['POST'])
 def resend_verification():
     email = request.json.get('email')

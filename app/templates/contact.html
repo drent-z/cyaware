@@ -1,48 +1,49 @@
-{% extends "layout.html" %}
-
-{% block title %}Contact{% endblock %}
-
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2 class="text-center mb-4">Contact Us</h2>
-            <p class="text-center">If you have any questions, feel free to reach out to us!</p>
-            <form id="contact-form" action="{{ url_for('users.contact') }}" method="POST" class="contact-form">
-                {{ form.hidden_tag() }}
-                <div class="form-group">
-                    {{ form.name.label(class="form-label") }}
-                    {{ form.name(class="form-control bg-dark text-white", placeholder="Enter your name") }}
-                </div>
-                <div class="form-group">
-                    {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
-                </div>
-                <div class="form-group">
-                    {{ form.message.label(class="form-label") }}
-                    {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
-                </div>
-                <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
-                <div class="g-recaptcha mt-3 d-flex justify-content-center" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark"></div>
-            </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render={{ recaptcha_site_key }}"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Contact Us</h2>
+                <p class="text-center">If you have any questions, feel free to reach out to us!</p>
+                <form id="contact-form" action="{{ url_for('users.contact') }}" method="POST" onsubmit="onSubmit(event)">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.name.label(class="form-label") }}
+                        {{ form.name(class="form-control bg-dark text-white", placeholder="Enter your name") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control bg-dark text-white", placeholder="Enter your email") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.message.label(class="form-label") }}
+                        {{ form.message(class="form-control bg-dark text-white", placeholder="Enter your message", rows="4") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+                    <input type="hidden" id="recaptcha-token" name="recaptcha_token">
+                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-theme="dark"></div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script>
-document.getElementById('contact-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    grecaptcha.ready(function() {
-        grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'contact'}).then(function(token) {
-            var recaptchaResponse = document.createElement('input');
-            recaptchaResponse.setAttribute('type', 'hidden');
-            recaptchaResponse.setAttribute('name', 'recaptcha_token');
-            recaptchaResponse.setAttribute('value', token);
-            document.getElementById('contact-form').appendChild(recaptchaResponse);
-            document.getElementById('contact-form').submit();
-        });
-    });
-});
-</script>
-{% endblock %}
+    <script>
+        function onSubmit(e) {
+            e.preventDefault();
+            grecaptcha.enterprise.ready(function() {
+                grecaptcha.enterprise.execute('{{ recaptcha_site_key }}', {action: 'submit'}).then(function(token) {
+                    document.getElementById('recaptcha-token').value = token;
+                    document.getElementById('contact-form').submit();
+                });
+            });
+        }
+    </script>
+</body>
+</html>
